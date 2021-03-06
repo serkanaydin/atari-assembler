@@ -21,7 +21,8 @@ unary
 	or
 	CNOT
 	ret
-nv 	call nfun
+nv 	
+	call nfun
 	or
 	call nvar
 	or
@@ -342,7 +343,7 @@ sstatus
 	call stat
 	call eos2
 	ret
-stat                           //kodda "sstat"tı, stat diye düzelttik
+stat
 	call d1
 	CCOM
 	call nvar
@@ -442,7 +443,7 @@ ifa
 	or
 	eif
 pr1 
-	call pel                            //"pell"di, pel yaptık
+	call pel
 	or
 	call psl
 	call pr2
