@@ -1,4 +1,3 @@
-.data
     CDQ: 0x10
     CSOE: 0x11
     CCOM: 0x12
@@ -53,37 +52,3 @@
     CLEN: 0x42
     CADR: 0x43
     CNFPN: 0x44
-.code
-    	exp	CLPRN
-            call exp
-            CRPRN
-            call nop
-            or
-            call unary
-            call exp
-            or
-            call nv
-            call nop
-            ret
-        unary	CPLUS
-        	CHNG
-        	CUPLUS
-        	or
-        	CMINUS
-        	CHNG
-        	CUMINUS
-        	or
-         	CNOT
-        	ret
-        nv	call nfun
-        	or
-        	call nvar
-        	or
-        	call ncon
-        	or
-        	call stcomp
-        	ret
-        nop	call op
-        	call exp
-        	or
-        	ret
