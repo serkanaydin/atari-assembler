@@ -184,7 +184,7 @@ sgosub
 sgr 
 scolor 
 xeos 
-    call exp
+	call exp
 scsave 
 scload 
 sdos 
@@ -253,7 +253,7 @@ srest
 	call eos
 	ret
 slinput 
-    call opd
+	call opd
 sread 
 	call nsvrl
 	call eos

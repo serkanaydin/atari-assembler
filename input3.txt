@@ -184,7 +184,7 @@ sgosub
 sgr 
 scolor 
 xeos 
-    call exp
+	call exp
 scsave 
 scload 
 sdos 
@@ -252,8 +252,8 @@ srest
 	or
 	call eos
 	ret
-slinput 
-    call opd
+sinput    //"slinput", "sinput" olarak değiştirildi.
+	call opd
 sread 
 	call nsvrl
 	call eos
