@@ -51,4 +51,4 @@
     CVAL   0x41
     CLEN   0x42
     CADR   0x43
-    CNFPN   0x44
+    CNFNP  0x44
