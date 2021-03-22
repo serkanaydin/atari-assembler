@@ -397,7 +397,7 @@ expl
 	call expl1
 	ret
 expl1 
-	CCOMP
+	CCOM
 	call expl
 	or
 	ret
@@ -506,7 +506,7 @@ nfsp
 sfnp 
 	CSTR
 	or
-	CCHAR
+	CCHR
 	or
 	ret
 pusr 

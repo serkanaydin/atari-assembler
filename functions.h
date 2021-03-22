@@ -1,7 +1,8 @@
 #include "definitions.h"
 
-#ifndef ATARI_ASSEMBLER_FUNCTIONS_H
-#define ATARI_ASSEMBLER_FUNCTIONS_H
+int nxsc() {
+    return program[cpc++];    //cpc points to the syntax_table[]
+}
 
 int labelSearch(char* str){
     int index=0;
@@ -12,15 +13,60 @@ int labelSearch(char* str){
     return -1;
 }
 
-
-int sntabSearch(){
+void getToken(){
     int i=cix;
     for(;i<200;i++){
         if(inbuff[i]==' ' || inbuff[i]=='\0')
             break;
     }
-    char subStr[i-cix];
     memcpy(subStr,(inbuff+cix),i-cix);
+    cix=i;
+}
+
+int search(struct table table[]) {  //srcadr is the address of the table, srcskip is the skip factor..
+    int i=cix;
+    for(;i<200;i++){
+        if(lbuff[i]==' ' || lbuff[i]=='\0')
+            break;
+    }
+    int size =i-cix;
+    int bufferIndex;
+    int tableIndex;
+    int error;
+    int situation=0;
+    stenum=-1;
+    while(1){
+        switch (situation) {
+            case 0: stenum++;
+                bufferIndex=cix;
+                tableIndex=0;
+                if(table[stenum].name ==NULL)
+                    return 1;
+                error =0;
+            case 1: if(*(lbuff + bufferIndex) == '.'){
+                    situation=5;
+                    break;
+                }
+            case 2: if(*(lbuff + bufferIndex) == (table[stenum].name)[tableIndex]){
+                    situation=3;
+                    break;
+                }
+                error=1;
+            case 3: bufferIndex++;
+                tableIndex++;
+                if(tableIndex < size){
+                    situation=1;
+                    break;
+                }
+                if(error==0)
+                    return 0;
+                situation=0;
+        }
+    }
+}
+
+int sntabSearch(){
+    getToken();
     for(int i=0;i<114;i++){
         if(strcmp(sntab[i].name,subStr)==0){
             return i;}
@@ -29,7 +75,7 @@ int sntabSearch(){
 }
 
 int opnTabSearch(char* str){
-    for(int i=0;i<53;i++){
+    for(int i=0;i<54;i++){
         if(strcmp(OPNTAB[i].name,str)==0){
             return i;
         }
@@ -60,13 +106,100 @@ short getlnum() {
     return lNum;
 }
 
-
-
 void skblank(){
     int i;
 
     while (inbuff[cix]==' ')
         cix++;
+}
+
+int erem(){
+    return 0;
+}
+
+int edata(){
+    return 0;
+}
+
+int eif(){
+    return 0;
+}
+
+int echng(){
+    outbuff[cox-1] = (char)(program[cpc++]&0x00ff); //outbuff is a char arr but program short arr
+    return(1);
+}
+
+void fail(){
+
+}
+
+int tncon(){
+    skblank();
+    tvscix=cix;
+    return 0;
+}
+
+int tscon(){
+    skblank;
+    if (inbuff[cix] != '"') //is the character read a double quote
+        return(1); //fail, carry=1
+
+    char ch0 =0x0f;
+    setcode(&ch0);  //set sconcode
+    tscox=cox;
+    setcode(NULL); //open a space in outbuff for string length..
+    char ch;
+    do {
+        cix++;
+        ch = inbuff[cix];
+        setcode(&ch);
+    }while (!((ch=='\n')||(ch == '"')));
+        if (ch == '"')
+            cix++;  //increment over double quote,
+    outbuff[tscox]=cox-tscox; //set string length
+    return(0); //success, carry=0
+}
+
+int tnvar(){
+    return 0;
+}
+
+int tsvar(){
+    return 0;
+}
+
+int srcont(){
+    skblank();
+    if(cix==svontx){                     //svontx sadece burada kullanılıyor. svontx'in ne olduğunu anlayamadım??????
+        if(program[cpc] <=svontc){       // >>sont1    //eğer bu rutine bir önce girildiğinden beri cix ilerlememişse sont1'e atlıyor.
+            setcode(&svontc);            //
+            cix=svontl;                  // >>sont2
+            return 0;                    //
+        }
+    }
+    getToken();
+    int index;
+    if((index=opnTabSearch(subStr))==-1){ //#CNFNP=0x44. NFNP means numeric function numeric parameter, like sin(), cos() etc..
+        return 1;                         //>>sontf         //failure -- token bulduk ama syntax table ile uyuşmadı
+    }
+    svontl=cix;                           //cix points to the next character after the token in inbuff. ix is set by getToken()
+    svontc=index + 0x10;                  //svontc is the token number..
+    if(program[cpc] ==svontc){            //
+        setcode(&svontc);                 //
+        cix=svontl;                       //>>sont2
+        return 0;                         //
+    }
+    if(program[cpc] == OPNTAB[opnTabSearch("CNFPNP")].value){       //#CNFNP=0x44. NFNP means numeric function numeric parameter, like sin(), cos() etc..
+        return 1;                                                       // >>sontf
+    }
+    if(program[cpc] <=svontc){          //tokens for nfnp's are larger or equal then 0x44, see opntab for this..
+        setcode(&svontc);               //
+        cix=svontl;                     //>>sont2
+        return 0;                       //
+    }
+    svontc=0;                           //sonf
+    return 1;                           //
 }
 
 void initializeSntab(){
@@ -178,7 +311,7 @@ void initializeSntab(){
     sntab[52].value=labelSearch("scsave");
     sntab[53].name="cload";
     sntab[53].value=labelSearch("scload");
-    sntab[54].name="sound";
+    sntab[54].name="sound";                                                 //???
     sntab[54].value=labelSearch("ssound");
     //??? SILET
 }
@@ -303,4 +436,4 @@ void initializeTables(){
     }*/
     initializeSntab();
 }
-#endif //ATARI_ASSEMBLER_FUNCTIONS_H
+

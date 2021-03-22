@@ -1,4 +1,4 @@
-    CDQ   0x10
+        CDQ   0x10
     CSOE   0x11
     CCOM   0x12
     CDOL   0x13
@@ -51,4 +51,4 @@
     CVAL   0x41
     CLEN   0x42
     CADR   0x43
-    CNFPN   0x44
+    CNFNP   0x44
