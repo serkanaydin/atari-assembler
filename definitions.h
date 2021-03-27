@@ -4,10 +4,15 @@ struct label{
     char* name;
     short location;
 };
-struct table{
-    char* name;
-    int value;
+union value{
+    long num;
+    char* str;
 };
+struct table{
+    char* string;
+    union value val;
+};
+struct table OPNTAB_STRING[71];
 struct table sntab[200];
 struct label LABEL[120];
 struct table OPNTAB[54];
@@ -26,5 +31,6 @@ int tvscix,tscox;
 char svontx,svontc,svvte,svontl=0;
 
 char subStr[255];
-
+int bufferIndex;
+int tableIndex;
 #endif //ATARI_ASSEMBLER_DEFINITIONS_H

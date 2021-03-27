@@ -13,6 +13,9 @@ int labelSearch(char* str){
     return -1;
 }
 
+
+
+
 void getToken(){
     int i=cix;
     for(;i<200;i++){
@@ -30,8 +33,6 @@ int search(struct table table[]) {  //srcadr is the address of the table, srcski
             break;
     }
     int size =i-cix;
-    int bufferIndex;
-    int tableIndex;
     int error;
     int situation=0;
     stenum=-1;
@@ -40,14 +41,14 @@ int search(struct table table[]) {  //srcadr is the address of the table, srcski
             case 0: stenum++;
                 bufferIndex=cix;
                 tableIndex=0;
-                if(table[stenum].name ==NULL)
+                if(table[stenum].string == NULL)
                     return 1;
                 error =0;
             case 1: if(*(lbuff + bufferIndex) == '.'){
                     situation=5;
                     break;
                 }
-            case 2: if(*(lbuff + bufferIndex) == (table[stenum].name)[tableIndex]){
+            case 2: if(*(lbuff + bufferIndex) == (table[stenum].string)[tableIndex]){
                     situation=3;
                     break;
                 }
@@ -68,7 +69,7 @@ int search(struct table table[]) {  //srcadr is the address of the table, srcski
 int sntabSearch(){
     getToken();
     for(int i=0;i<114;i++){
-        if(strcmp(sntab[i].name,subStr)==0){
+        if(strcmp(sntab[i].string, subStr) == 0){
             return i;}
     }
     return -1;
@@ -76,7 +77,7 @@ int sntabSearch(){
 
 int opnTabSearch(char* str){
     for(int i=0;i<54;i++){
-        if(strcmp(OPNTAB[i].name,str)==0){
+        if(strcmp(OPNTAB[i].string, str) == 0){
             return i;
         }
     }
@@ -169,150 +170,117 @@ int tsvar(){
     return 0;
 }
 
-int srcont(){
-    skblank();
-    if(cix==svontx){                     //svontx sadece burada kullanılıyor. svontx'in ne olduğunu anlayamadım??????
-        if(program[cpc] <=svontc){       // >>sont1    //eğer bu rutine bir önce girildiğinden beri cix ilerlememişse sont1'e atlıyor.
-            setcode(&svontc);            //
-            cix=svontl;                  // >>sont2
-            return 0;                    //
-        }
-    }
-    getToken();
-    int index;
-    if((index=opnTabSearch(subStr))==-1){ //#CNFNP=0x44. NFNP means numeric function numeric parameter, like sin(), cos() etc..
-        return 1;                         //>>sontf         //failure -- token bulduk ama syntax table ile uyuşmadı
-    }
-    svontl=cix;                           //cix points to the next character after the token in inbuff. ix is set by getToken()
-    svontc=index + 0x10;                  //svontc is the token number..
-    if(program[cpc] ==svontc){            //
-        setcode(&svontc);                 //
-        cix=svontl;                       //>>sont2
-        return 0;                         //
-    }
-    if(program[cpc] == OPNTAB[opnTabSearch("CNFPNP")].value){       //#CNFNP=0x44. NFNP means numeric function numeric parameter, like sin(), cos() etc..
-        return 1;                                                       // >>sontf
-    }
-    if(program[cpc] <=svontc){          //tokens for nfnp's are larger or equal then 0x44, see opntab for this..
-        setcode(&svontc);               //
-        cix=svontl;                     //>>sont2
-        return 0;                       //
-    }
-    svontc=0;                           //sonf
-    return 1;                           //
-}
-
 void initializeSntab(){
-    sntab[0].name="rem";
-    sntab[0].value=labelSearch("srem");
-    sntab[1].name="data";
-    sntab[1].value=labelSearch("sdata");
-    sntab[2].name="input";
-    sntab[2].value=labelSearch("sinput");
-    sntab[3].name="color";
-    sntab[3].value=labelSearch("scolor");
-    sntab[4].name="list ";
-    sntab[4].value=labelSearch("slist");
-    sntab[5].name="enter";
-    sntab[5].value=labelSearch("senter");
-    sntab[6].name="let";
-    sntab[6].value=labelSearch("slet");
-    sntab[7].name="if";
-    sntab[7].value=labelSearch("sif");
-    sntab[8].name="for";
-    sntab[8].value=labelSearch("sfor");
-    sntab[9].name="next";
-    sntab[9].value=labelSearch("snext");
-    sntab[10].name="goto";
-    sntab[10].value=labelSearch("sgoto");
-    sntab[11].name="go to";
-    sntab[11].value=labelSearch("sgoto");
-    sntab[12].name="gosub";
-    sntab[12].value=labelSearch("sgosub");
-    sntab[13].name="trap";
-    sntab[13].value=labelSearch("strap");
-      sntab[14].name="bye";                                                            //DOESNT EXIST
-      sntab[14].value=labelSearch("strap");      //hata verdiği için herhangi bir değer verdim
-    sntab[15].name="cont";
-    sntab[15].value=labelSearch("scont");
-    sntab[16].name="com";
-    sntab[16].value=labelSearch("scom");
-    sntab[17].name="close";
-    sntab[17].value=labelSearch("sclose");
-    sntab[18].name="clr";
-    sntab[18].value=labelSearch("sclr");
-    sntab[19].name="deg";
-    sntab[19].value=labelSearch("sdeg");
-    sntab[20].name="dim";
-    sntab[20].value=labelSearch("sdim");
-    sntab[21].name="end";
-    sntab[21].value=labelSearch("send");
-    sntab[22].name="new";
-    sntab[22].value=labelSearch("snew");
-    sntab[23].name="open";
-    sntab[23].value=labelSearch("sopen");
-    sntab[24].name="load";
-    sntab[24].value=labelSearch("sload");
-    sntab[25].name="save";
-    sntab[25].value=labelSearch("ssave");
-    sntab[26].name="status";
-    sntab[26].value=labelSearch("sstatus");
-    sntab[27].name="note";
-    sntab[27].value=labelSearch("snote");
-    sntab[28].name="point";
-    sntab[28].value=labelSearch("spoint");
-    sntab[29].name="xio";
-    sntab[29].value=labelSearch("sxio");
-    sntab[30].name="on";
-    sntab[30].value=labelSearch("son");
-    sntab[31].name="poke";
-    sntab[31].value=labelSearch("spoke");
-    sntab[32].name="print";
-    sntab[32].value=labelSearch("sprint");
-    sntab[33].name="rad";
-    sntab[33].value=labelSearch("srad");
-    sntab[34].name="read";
-    sntab[34].value=labelSearch("sread");
-    sntab[35].name="restore";
-    sntab[35].value=labelSearch("srest");
-    sntab[36].name="return";
-    sntab[36].value=labelSearch("sret");
-    sntab[37].name="run";
-    sntab[37].value=labelSearch("srun");
-    sntab[38].name="stop";
-    sntab[38].value=labelSearch("sstop");
-    sntab[39].name="pop";
-    sntab[39].value=labelSearch("spop");
-    sntab[40].name="?";
-    sntab[40].value=labelSearch("sprint");
-    sntab[41].name="get";
-    sntab[41].value=labelSearch("sget");
-    sntab[42].name="put";
-    sntab[42].value=labelSearch("sput");
-    sntab[43].name="graphics";
-    sntab[43].value=labelSearch("sgr");
-    sntab[44].name="plot";
-    sntab[44].value=labelSearch("splot");
-    sntab[45].name="position";
-    sntab[45].value=labelSearch("spos");
-    sntab[46].name="dos";
-    sntab[46].value=labelSearch("sdos");
-    sntab[47].name="drawto";
-    sntab[47].value=labelSearch("sdrawto");                            //*SDRAWTO
-    sntab[48].name="setcolor";
-    sntab[48].value=labelSearch("ssetcolor");
-    sntab[49].name="locate";
-    sntab[49].value=labelSearch("slocate");                            //*slocate
-    sntab[50].name="sound";
-    sntab[50].value=labelSearch("ssound");
-    sntab[51].name="lprint";
-    sntab[51].value=labelSearch("slprint");
-    sntab[52].name="csave";
-    sntab[52].value=labelSearch("scsave");
-    sntab[53].name="cload";
-    sntab[53].value=labelSearch("scload");
-    sntab[54].name="sound";                                                 //???
-    sntab[54].value=labelSearch("ssound");
+    sntab[0].string="rem";
+    sntab[0].val.num=labelSearch("srem");
+    sntab[1].string="data";
+    sntab[1].val.num=labelSearch("sdata");
+    sntab[2].string="input";
+    sntab[2].val.num=labelSearch("sinput");
+    sntab[3].string="color";
+    sntab[3].val.num=labelSearch("scolor");
+    sntab[4].string="list ";
+    sntab[4].val.num=labelSearch("slist");
+    sntab[5].string="enter";
+    sntab[5].val.num=labelSearch("senter");
+    sntab[6].string="let";
+    sntab[6].val.num=labelSearch("slet");
+    sntab[7].string="if";
+    sntab[7].val.num=labelSearch("sif");
+    sntab[8].string="for";
+    sntab[8].val.num=labelSearch("sfor");
+    sntab[9].string="next";
+    sntab[9].val.num=labelSearch("snext");
+    sntab[10].string="goto";
+    sntab[10].val.num=labelSearch("sgoto");
+    sntab[11].string="go to";
+    sntab[11].val.num=labelSearch("sgoto");
+    sntab[12].string="gosub";
+    sntab[12].val.num=labelSearch("sgosub");
+    sntab[13].string="trap";
+    sntab[13].val.num=labelSearch("strap");
+      sntab[14].string="bye";                                                            //DOESNT EXIST
+      sntab[14].val.num=labelSearch("strap");      //hata verdiği için herhangi bir değer verdim
+    sntab[15].string="cont";
+    sntab[15].val.num=labelSearch("scont");
+    sntab[16].string="com";
+    sntab[16].val.num=labelSearch("scom");
+    sntab[17].string="close";
+    sntab[17].val.num=labelSearch("sclose");
+    sntab[18].string="clr";
+    sntab[18].val.num=labelSearch("sclr");
+    sntab[19].string="deg";
+    sntab[19].val.num=labelSearch("sdeg");
+    sntab[20].string="dim";
+    sntab[20].val.num=labelSearch("sdim");
+    sntab[21].string="end";
+    sntab[21].val.num=labelSearch("send");
+    sntab[22].string="new";
+    sntab[22].val.num=labelSearch("snew");
+    sntab[23].string="open";
+    sntab[23].val.num=labelSearch("sopen");
+    sntab[24].string="load";
+    sntab[24].val.num=labelSearch("sload");
+    sntab[25].string="save";
+    sntab[25].val.num=labelSearch("ssave");
+    sntab[26].string="status";
+    sntab[26].val.num=labelSearch("sstatus");
+    sntab[27].string="note";
+    sntab[27].val.num=labelSearch("snote");
+    sntab[28].string="point";
+    sntab[28].val.num=labelSearch("spoint");
+    sntab[29].string="xio";
+    sntab[29].val.num=labelSearch("sxio");
+    sntab[30].string="on";
+    sntab[30].val.num=labelSearch("son");
+    sntab[31].string="poke";
+    sntab[31].val.num=labelSearch("spoke");
+    sntab[32].string="print";
+    sntab[32].val.num=labelSearch("sprint");
+    sntab[33].string="rad";
+    sntab[33].val.num=labelSearch("srad");
+    sntab[34].string="read";
+    sntab[34].val.num=labelSearch("sread");
+    sntab[35].string="restore";
+    sntab[35].val.num=labelSearch("srest");
+    sntab[36].string="return";
+    sntab[36].val.num=labelSearch("sret");
+    sntab[37].string="run";
+    sntab[37].val.num=labelSearch("srun");
+    sntab[38].string="stop";
+    sntab[38].val.num=labelSearch("sstop");
+    sntab[39].string="pop";
+    sntab[39].val.num=labelSearch("spop");
+    sntab[40].string="?";
+    sntab[40].val.num=labelSearch("sprint");
+    sntab[41].string="get";
+    sntab[41].val.num=labelSearch("sget");
+    sntab[42].string="put";
+    sntab[42].val.num=labelSearch("sput");
+    sntab[43].string="graphics";
+    sntab[43].val.num=labelSearch("sgr");
+    sntab[44].string="plot";
+    sntab[44].val.num=labelSearch("splot");
+    sntab[45].string="position";
+    sntab[45].val.num=labelSearch("spos");
+    sntab[46].string="dos";
+    sntab[46].val.num=labelSearch("sdos");
+    sntab[47].string="drawto";
+    sntab[47].val.num=labelSearch("sdrawto");                            //*SDRAWTO
+    sntab[48].string="setcolor";
+    sntab[48].val.num=labelSearch("ssetcolor");
+    sntab[49].string="locate";
+    sntab[49].val.num=labelSearch("slocate");                            //*slocate
+    sntab[50].string="sound";
+    sntab[50].val.num=labelSearch("ssound");
+    sntab[51].string="lprint";
+    sntab[51].val.num=labelSearch("slprint");
+    sntab[52].string="csave";
+    sntab[52].val.num=labelSearch("scsave");
+    sntab[53].string="cload";
+    sntab[53].val.num=labelSearch("scload");
+    sntab[54].string="sound";                                                 //???
+    sntab[54].val.num=labelSearch("ssound");
     //??? SILET
 }
 
@@ -339,15 +307,43 @@ void initializeTables(){
             while (token) {
                 char *temp = (char*)(malloc(sizeof(token)));
                 strcpy(temp,token); // temp = CDQ
-                OPNTAB[i].name=temp;
+                OPNTAB[i].string=temp;
                 token = strtok(NULL, "\n\t\r "); // token = 0x10
-                OPNTAB[i].value=(int)strtol(token, NULL, 16); // value = 0x10 return 16
+                if(strlen(token)==1)
+                    OPNTAB[i].val.num=(long)strtol(token, NULL, 16); // value = 0x10 return 16
+
                 token = strtok(NULL, "\n\t\r "); // token = CSOE
                 i++;
             }
         }
     }
     fclose(fp2);
+
+    fp2=fopen("opntab2.txt","r");
+    i=0;
+    if(fp2!=NULL) {
+        while (fgets(line, sizeof line, fp2) != NULL) {
+
+            /*  CDQ   0x10
+                CSOE   0x11 */
+
+            token = strtok(line, "\n\t\r "); // token = CDQ
+            while (token) {
+                char *temp = (char*)(malloc(sizeof(token)));
+                strcpy(temp,token); // temp = CDQ
+                OPNTAB_STRING[i].string=temp;
+                token = strtok(NULL, "\n\t\r "); // token = 0x10
+                temp =(char*)(malloc(8));
+                strcpy(temp,token);
+                OPNTAB_STRING[i].val.str=temp; // value = 0x10 return 16
+                printf("%s\t%d\n",temp,i);
+                token = strtok(NULL, "\n\t\r "); // token = CSOE
+                i++;
+            }
+        }
+    }
+    fclose(fp2);
+
     i=0;
     int k=0;
     /* 
@@ -376,7 +372,6 @@ void initializeTables(){
                 i++; // label doesn't increment PC
             }
             token = strtok(NULL, ",\n\t\r ");
-            printf("%s \n", token);
         }
 
         rewind(fp); // put fp to the start of file
@@ -409,8 +404,7 @@ void initializeTables(){
                 }
                 else  if(token[0]=='C') { // if token starts with C
                     int index =opnTabSearch(token);
-                    printf("token = %s, index = %d \n", token, index);
-                    program[k]=OPNTAB[index].value;
+                    program[k]=OPNTAB[index].val.num;
                     k++;
                 }
                 else if(strcmp(token,"chng")==0){
@@ -449,10 +443,10 @@ void initializeTables(){
         }
     }
     /*for(int k=0;k<110;k++){
-        printf("label %s, value:%d\n",LABEL[k].name,LABEL[k].location);
+        printf("label %s, value:%d\n",LABEL[k].string,LABEL[k].location);
     }
     for(int k=0;k<54;k++){
-        printf("operator %s, value:%x\n",OPNTAB[k].name,OPNTAB[k].value);
+        printf("operator %s, value:%x\n",OPNTAB[k].string,OPNTAB[k].value);
     }
     for(int k=0; k<1000;k++){
         printf("program %d value:%x\n",k,program[k]);
@@ -460,3 +454,30 @@ void initializeTables(){
     initializeSntab();
 }
 
+int srcont(){
+    skblank();
+    char temp=cix;
+    if(temp != svontx){
+        svontx= temp;
+        if(search(OPNTAB)){                     //STENUMU AYARLIYOR
+            svontc =0;
+            return 1;
+        }
+        svontl = bufferIndex;
+        temp = stenum + 0x10;                   //
+        svontc = temp;
+    }
+    if(svontc == temp){
+        setcode(temp);
+        cix = svontl;
+        return 0;
+    }
+    else if(temp != 0x44)
+        return 1;
+    else{
+        temp = svontc;
+        setcode(temp);
+        cix = svontl;
+        return 0;
+    }
+}

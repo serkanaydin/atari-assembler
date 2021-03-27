@@ -8,7 +8,7 @@
 
 
         int synent() {
-    cpc = spc = sntab[stenum].value;
+    cpc = spc = sntab[stenum].val.num;
     stklvl = 0;
     six = cix;
     sox = cox;
