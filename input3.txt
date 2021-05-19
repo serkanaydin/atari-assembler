@@ -26,7 +26,7 @@ nv
 	or
 	call nvar
 	or
-	ncon
+	tncon
 	or
 	call stcomp
 	ret

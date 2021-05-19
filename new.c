@@ -3,12 +3,12 @@
 #include <string.h>
 #include "functions.h"
 #include "definitions.h"
-
+#include "syntaxer.h"
 
 
 
         int synent() {
-    cpc = spc = sntab[stenum].val.num;
+    cpc = spc = LABEL[sntab[stenum].val.num].location;
     stklvl = 0;
     six = cix;
     sox = cox;
@@ -19,7 +19,7 @@
             stklvl += 4;
             stack[stklvl + 1] = cix;
             stack[stklvl + 2] = cox;
-            stack[stklvl + 3] = cpc;
+            stack[stklvl + 3] = cpc+1;
             cpc = code;
         }
         else if (code == 0x0003) { //return
@@ -62,6 +62,20 @@
             if (erem())
                 fail();
         }
+        else if (code ==2 || code ==3 ) {            //or veya return
+            if (stklvl == 0)
+                return 1;                             //main exit of syntaxer ??  nasıl dönmeli?
+            cpc = stack[stklvl + 3];
+            stklvl -= 4;
+            if (stklvl < 0)
+                fail();
+        }
+        else if ((code>=16)&&(code<=127)) {
+            if (!srcont())
+                fail();
+        }
+        else
+            printf("unrecognized code in syntax table\n");
     }
 }
 int main(void){
@@ -77,6 +91,7 @@ int main(void){
         if (binint < 0)
             direct_statement = 1;
         skblank();
+        stmstart=cix;
         if (inbuff[cix] == '\n') {           //boş satır.
             if (direct_statement == 1) //if no line number
                 continue;
@@ -87,8 +102,14 @@ int main(void){
         skblank();
         lbuff = inbuff;
         search(sntab);
-        printf("%d",stenum);
         setcode(NULL);
         skblank();
+        if(!synent()){
+            printf("error");
+        }
+        outbuff[stmstart] = cox;
+        while (inbuff[cix-1]!='\n')
+            outbuff[2]=cox;
+        linelength=getll();
     }
 }

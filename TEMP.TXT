@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <name.h>
 struct label{
-char* string;
+char* name;
 short location;
 };
 struct table{
-char* string;
+char* name;
 int value;
 };
 
@@ -17,7 +17,7 @@ short program[20000];
 int opnTabSearch(char* str){
     int index=0;
         for(int i=0;i<53;i++){
-            if(strcmp(OPNTAB[i].string,str)==0){
+            if(strcmp(OPNTAB[i].name,str)==0){
                 return i;
             }
     }
@@ -26,7 +26,7 @@ int opnTabSearch(char* str){
 int labelSearch(char* str){
     int index=0;
         for(int i=0;i<114;i++){
-            if(strcmp(LABEL[i].string,str)==0){
+            if(strcmp(LABEL[i].name,str)==0){
                 return i;}
         }
     return -1;
@@ -51,7 +51,7 @@ int main(void){
             while (token) {
                 char* temp = (char*)(malloc(sizeof(token)));
                 strcpy(temp,token);
-                OPNTAB[i].string=temp;
+                OPNTAB[i].name=temp;
                 token = strtok(NULL, "\n\t\r ");
                 OPNTAB[i].value=(int)strtol(token, NULL, 16);
                 token = strtok(NULL, "\n\t\r ");
@@ -76,7 +76,7 @@ int main(void){
                 token = strtok(line, "\n\r\t ");
                 char* temp = (char *)(malloc(sizeof(token)));
                 strcpy(temp,token);
-                LABEL[i].string=temp;
+                LABEL[i].name=temp;
                 LABEL[i].location=PC;
                 i++;
             }
@@ -152,9 +152,9 @@ int main(void){
 
 
     for(int k=0;k<110;k++){
-        printf("label %s, address:%d\n",LABEL[k].string,LABEL[k].location);
+        printf("label %s, address:%d\n",LABEL[k].name,LABEL[k].location);
     }
     for(int k=0;k<54;k++){
-        printf("operator %s, value:%x\n",OPNTAB[k].string,OPNTAB[k].value);
+        printf("operator %s, value:%x\n",OPNTAB[k].name,OPNTAB[k].value);
     }
 }
