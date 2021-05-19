@@ -12,6 +12,17 @@ struct table{
     char* name;
     union value val;
 };
+struct vTable{
+    char* name;
+    char* entry;
+    struct vTable* next;
+};
+typedef struct vTable* VTABLE_PTR;
+typedef struct vTable VTABLE;
+
+VTABLE_PTR head;
+VTABLE_PTR tail;
+
 struct table OPNTAB_STRING[71];
 struct table sntab[200];
 struct label LABEL[120];

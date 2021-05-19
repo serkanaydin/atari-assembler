@@ -3,4 +3,4 @@ project(atari_assembler C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(atari_assembler  new.c functions.h definitions.h syntaxer.h)
+add_executable(atari_assembler  new.c functions.h definitions.h syntaxer.h table.h)

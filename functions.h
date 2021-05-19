@@ -1,4 +1,5 @@
 #include "definitions.h"
+#include "table.h"
 
 int labelSearch(char* str){
     int index=0;
@@ -9,9 +10,20 @@ int labelSearch(char* str){
     return -1;
 }
 
+char* getFromTable(void* table){
+    char* temp;
+    if(table==sntab){
+        temp = ((struct table*)(table))[stenum].name;
+    }
+    else if(table == OPNTAB_STRING)
+        temp = ((struct table*)(table))[stenum].val.str;
+    else{
+        temp= getStr(stenum);
+    }
+    return temp;
+}
 
-
-int search(struct table table[] ) {  //srcadr is the address of the table, srcskip is the skip factor..
+int search(void* table ) {  //srcadr is the address of the table, srcskip is the skip factor..
     int size;
     int error;
     int situation=0;
@@ -22,7 +34,7 @@ int search(struct table table[] ) {  //srcadr is the address of the table, srcsk
             case 0: stenum++;
                 bufferIndex=cix;
                 tableIndex=0;
-                if(table[stenum].name == NULL)
+                if(getFromTable(table) == NULL)
                     return 1;
                 error =0;
             case 1: if(*(lbuff + bufferIndex) == '.'){
@@ -30,7 +42,8 @@ int search(struct table table[] ) {  //srcadr is the address of the table, srcsk
                     break;
                 }
             case 2:
-                temp = (table == sntab) ?  table[stenum].name : table[stenum].val.str;
+
+                temp=getFromTable(table);
                 size=strlen(temp);
                 if(*(lbuff + bufferIndex) == temp[tableIndex]){
                     situation=3;
