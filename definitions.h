@@ -12,16 +12,18 @@ struct table{
     char* name;
     union value val;
 };
-struct vTable{
+struct linkedTable{
     char* name;
     char* entry;
-    struct vTable* next;
+    struct linkedTable* next;
 };
-typedef struct vTable* VTABLE_PTR;
-typedef struct vTable VTABLE;
+typedef struct linkedTable* LinkedTable_PTR;
+typedef struct linkedTable LinkedTAB;
 
-VTABLE_PTR head;
-VTABLE_PTR tail;
+LinkedTable_PTR  VNTP_HEAD=NULL;
+LinkedTable_PTR VNTP_TAIL=NULL;
+LinkedTable_PTR  STMTAB_HEAD=NULL;
+LinkedTable_PTR STMTAB_TAIL=NULL;
 
 struct table OPNTAB_STRING[71];
 struct table sntab[200];
@@ -40,7 +42,7 @@ int stack[200];
 int cpc, spc, six, sox, stklvl;
 int tvscix,tscox;
 
-char svontx,svontc,svvte,svontl=0;
+char svontx,svontc,svvte,svontl,svvvte=0;
 
 char stmstart;
 

@@ -253,7 +253,7 @@ main() {
 
 //*****variable name not found in the vntp table.. Go expand vntp table and write the new variable name into it..
                 if (result == 1){
-                    cix=tvscix-cix;	 // variable length; current value of cix is in tvscix
+                    cix=tvscix-cix;	 // variable length; current value of cix is in tvscix                              //SBC: tvscix-cix-C
                     explow(&vntd, cix); //vntd tablosunda variable length kadar yer aç..
                     pty=cix-1;   //why -1 ????
                     ptx=tvscix-1;	//and tvscix points to the character just after the variable..

@@ -11,24 +11,24 @@ int labelSearch(char* str){
 }
 
 char* getFromTable(void* table){
-    char* temp;
-    if(table==sntab){
+    char* temp=NULL;
+    if(table == sntab){
         temp = ((struct table*)(table))[stenum].name;
     }
-    else if(table == OPNTAB_STRING)
-        temp = ((struct table*)(table))[stenum].val.str;
-    else{
-        temp= getStr(stenum);
+    else if(table == OPNTAB_STRING) { temp = ((struct table *) (table))[stenum].val.str; }
+    else if(table == VNTP_HEAD){
+        temp= getStr(stenum,VNTP_HEAD);
     }
     return temp;
 }
 
-int search(void* table ) {  //srcadr is the address of the table, srcskip is the skip factor..
+int search(void* table ,int SRCNXT) {  //srcadr is the address of the table, srcskip is the skip factor..
     int size;
     int error;
     int situation=0;
     char* temp;
-    stenum=-1;
+    if(!SRCNXT)
+        stenum=-1;
     while(1){
         switch (situation) {
             case 0: stenum++;
@@ -57,7 +57,6 @@ int search(void* table ) {  //srcadr is the address of the table, srcskip is the
                     break;
                 }
                 if(error==0) {
-                    cix=bufferIndex;
                     return 0;
                 }
                 situation=0;
@@ -74,13 +73,11 @@ int opnTabSearch(char* str){
     return -1;
 }
 
-void setcode(char *a) {
+void setcode(char* a) {
     if(a==NULL)
         outbuff[cox++]= '\0';
-    else
-    outbuff[cox++]=*a;
-    if (cox==0)
-        printf("line is too long");
+    else { outbuff[cox++] = *a; }
+    if (cox==0) { printf("line is too long"); }
 }
 
 short getlnum() {

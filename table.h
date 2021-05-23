@@ -1,29 +1,25 @@
 #include "definitions.h"
-void initializeVTABLE(char* name,char entry[]){
-    head = (VTABLE_PTR)(malloc(sizeof (VTABLE)));
-    char* nameTmp=(char*)(malloc(strlen(name)));
-    strcpy(nameTmp,name);
-    head->name=nameTmp;
-    char* entryTmp = (char*)(malloc(8));
-    strcpy(entryTmp,entry);
-    head->entry=entryTmp;
+void initializeTABLE(LinkedTable_PTR head,LinkedTable_PTR tail){
+    head = (LinkedTable_PTR)(malloc(sizeof (LinkedTAB)));
+    head->name=NULL;
+    head->entry=NULL;
     tail=head;
     tail->next=NULL;
 }
-void addToVTABLE(char* name,char entry[]){
-    VTABLE_PTR temp = (VTABLE_PTR)(malloc(sizeof (VTABLE)));
-    char* nameTmp=(char*)(malloc(strlen(name)));
-    strcpy(nameTmp,name);
-    temp->name=nameTmp;
-    char* entryTmp = (char*)(malloc(8));
-    strcpy(entryTmp,entry);
-    temp->entry=nameTmp;
-    tail->next=temp;
-    tail=temp;
-    tail->next=NULL;
+void addToTABLE(LinkedTable_PTR head,LinkedTable_PTR tail){
+    if(head==NULL)
+        initializeTABLE(head,tail);
+    else {
+        LinkedTable_PTR temp = (LinkedTable_PTR) (malloc(sizeof(LinkedTAB)));
+        temp->name = NULL;
+        temp->entry = NULL;
+        tail->next = temp;
+        tail = temp;
+        tail->next = NULL;
+    }
 }
-char* getStr(int index){
-    VTABLE_PTR current=head;
+char* getStr(int index,LinkedTable_PTR head){
+    LinkedTable_PTR current=head;
     for(int i=0;i<index;i++){
         current=current->next;
         if(current==NULL)

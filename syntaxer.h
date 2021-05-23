@@ -7,7 +7,7 @@ int srcont(){
     char temp=cix;
     if(temp != svontx){
         svontx= temp;
-        if(search(OPNTAB_STRING)){                     //STENUMU AYARLIYOR
+        if(search(OPNTAB_STRING,0)){                     //STENUMU AYARLIYOR
             svontc =0;
             return 1;
         }
@@ -85,7 +85,33 @@ int tvar(int tvtype){
         char temp=cix;
         cix=tvscix;    //search expects the string to be searched pointed by cix.
         tvscix=temp;  //variable string'in sonunu tvscix'e attık.. search
-        search(head);
+        int result=search(VNTP_HEAD,0);
+        while(!result){
+            if(bufferIndex==tvscix){
+                break;
+            }
+            else{
+                result=search(VNTP_HEAD,1);
+            }
+        }
+        if (result == 1){
+            cix=tvscix-cix-1;
+            addToTABLE(VNTP_HEAD,VNTP_TAIL);
+            char tempVname[200];
+            memcpy(tempVname,(inbuff+cix-1),cix);
+            VNTP_TAIL->name=tempVname;
+            addToTABLE(STMTAB_HEAD,STMTAB_TAIL);
+            svvvte++;
+            char* stmtabTemp= (char*)(calloc(8,1));
+            STMTAB_TAIL->entry=stmtabTemp;
+
+            if(tvtype==0x40)
+                --tvscix;
+            cix=tvscix;
+            if (stenum>0x7f)
+                return 1;
+            setcode(&stenum);
+        }
     }
     else{
         return 1;                           //error
@@ -97,10 +123,10 @@ int tvar(int tvtype){
 }
 
 int tnvar(){
-    return 0;
+    return tvar(0x00);
 }
 
 int tsvar(){
-    return 0;
+    return tvar(0x80);
 }
 

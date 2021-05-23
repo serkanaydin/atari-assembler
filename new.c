@@ -101,7 +101,8 @@ int main(void){
         setcode(NULL);
         skblank();
         lbuff = inbuff;
-        search(sntab);
+        search(sntab,0);
+        cix=bufferIndex;
         setcode(NULL);
         skblank();
         if(!synent()){
