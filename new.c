@@ -13,13 +13,13 @@
     six = cix;
     sox = cox;
     while (1) {
-        short code = nxsc();
+        code = nxsc();
         if (code == 0x0000) {
             code = nxsc();
             stklvl += 4;
             stack[stklvl + 1] = cix;
             stack[stklvl + 2] = cox;
-            stack[stklvl + 3] = cpc+1;
+            stack[stklvl + 3] = cpc;
             cpc = code;
         }
         else if (code == 0x0003) { //return

@@ -1,4 +1,6 @@
 #include <ctype.h>
+
+
 int nxsc() {
     return program[++cpc];    //cpc points to the syntax_table[]
 }
@@ -48,16 +50,71 @@ int echng(){
     return(1);
 }
 
-void fail(){
-
+int fail(){
+    while(1){                                           //??
+        code=nxsc();
+        while (code<2 || code >3 ){
+            if (code == 0 ){
+                cpc++;
+            }
+            code=nxsc();
+        }
+        if(code==3){
+            if(stklvl==0){
+                return 1;
+            }
+            cpc=stack[stklvl+3];                        //??
+            stklvl-=4;
+        }
+        else{
+            if(cix>maxcix){
+                maxcix = cix;
+                cix = stack[stklvl+3];                  //??
+                cox = stack[stklvl+2];                  //??
+            }
+        }
+        return 0;
+    }
 }
 
 int tncon(){
-
+    skblank();
+    tvscix=cix;
+    int test=0;
+    int i=0;
+    while(inbuff[cix+i]<='9' || inbuff[cix+i]>='0'){
+        i++;
+        test=1;
+    }
+    if(test==0)
+        return 1;
+    char token=0x0e;
+    setcode(&token);
+    int outbuffIndex=0;
+    while(outbuffIndex<=i){
+        outbuff[cox+outbuffIndex]=inbuff[cix+i];
+        outbuffIndex++;
+    }
+    cox=cox+outbuffIndex+1;
+    return 0;
 }
 
 int tscon(){
-
+    skblank();
+    if(inbuff[cix]!='"')
+        return 1;
+    char token=0x0f;
+    setcode(&token);
+    tscox=cox;
+    setcode(NULL);
+    char ch;
+    do{
+        cix++;
+        ch = inbuff[cix];
+        setcode(&ch);
+    }while (!((ch=='\n')||(ch == '"')));
+    outbuff[tscox]=cox-tscox;
+    return 0;
 }
 int tvar(int tvtype){
     skblank();
