@@ -52,18 +52,19 @@ char* getLabel(long location){
                     return 1;
                 }
         }
+        else if (code == 0x0005) {
+            if(tnvar())
+                if(fail()){
+                    return 1;
+                }
+        }
         else if (code == 0x0006) {
             if(tscon())
                 if(fail()){
                     return 1;
                 }
         }
-        else if (code == 0x0006) {
-            if(fail()){
-                return 1;
-            }
-        }
-        else if (code == 0x0006) {
+        else if (code == 0x0007) {
             if(tsvar())
                 if(fail()){
                     return 1;
