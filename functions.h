@@ -1,5 +1,6 @@
 #include "definitions.h"
 #include "table.h"
+#include <stdio.h>
 
 int labelSearch(char* str){
     int index=0;
@@ -63,7 +64,6 @@ int search(void* table ,int SRCNXT) {  //srcadr is the address of the table, src
         }
     }
 }
-
 int opnTabSearch(char* str){
     for(int i=0;i<54;i++){
         if(strcmp(OPNTAB[i].name, str) == 0){
@@ -72,11 +72,15 @@ int opnTabSearch(char* str){
     }
     return -1;
 }
-
 void setcode(char* a) {
     if(a==NULL)
         outbuff[cox++]= '\0';
     else { outbuff[cox++] = *a; }
+    printf("SETCODE-> COX:%d OUTBUFF: ",cox);
+    for(int i=0;i<=cox;i++){
+        printf("%x",outbuff[i]);
+    }
+    printf("\n");
     if (cox==0) { printf("line is too long"); }
 }
 

@@ -10,7 +10,7 @@ int srcont(){
     if(temp != svontx){
         svontx= temp;
         if(search(OPNTAB_STRING,0)){                     //STENUMU AYARLIYOR
-            svontc =0;
+            svontc ='\0';
             return 1;
         }
         svontl = bufferIndex;
@@ -18,18 +18,19 @@ int srcont(){
         svontc = temp;
     }
     temp = program[cpc];
+    printf("--SRCONT-- temp=%d svontc=%d\n",temp,svontc);
     if(svontc == temp){
         setcode(temp);
         cix = svontl;
-        return 1;
+        return 0;
     }
     else if(temp >= 0x44) {
         setcode(svontc);
         cix = svontl;
-        return 1; }
+        return 0; }
     else{
         svontc='\0';
-        return 0;
+        return 1;
     }
 }
 
@@ -58,19 +59,23 @@ int fail(){
                 cpc++;
             }
             code=nxsc();
+            printf("--Fail-- code=%d\n",code);
         }
         if(code==3){
+            printf("--Fail-- code=3 stklvl=%d\n",stklvl);
+
             if(stklvl==0){
                 return 1;
             }
-            cpc=stack[stklvl+3];                        //??
+            cpc=stack[stklvl-1];                        //??
             stklvl-=4;
+            printf("--Fail-- cpc=%d stklvl=%d\n",cpc,stklvl);
         }
         else{
             if(cix>maxcix){
                 maxcix = cix;
-                cix = stack[stklvl+3];                  //??
-                cox = stack[stklvl+2];                  //??
+                cix = stack[stklvl-3];                  //??
+                cox = stack[stklvl-2];                  //??
             }
         }
         return 0;
