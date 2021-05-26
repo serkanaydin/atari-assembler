@@ -20,7 +20,12 @@ char* getLabel(long location){
     stklvl = 0;
     six = cix;
     sox = cox;
-    while (1) {
+            stack[1]=cix;
+            stack[2]=cox;
+            stack[3]=cpc;   //record the present address.
+            stklvl+=4;
+
+            while (1) {
         code = nxsc();
         if (code == 0x0000) {
             code = nxsc();
@@ -31,14 +36,6 @@ char* getLabel(long location){
             printf("LABEL=%s\n",getLabel(code));
             stklvl += 4;
             printf("Stklvl: %d cpc:%d six:%d sox:%d spc:%d\n",stklvl,cpc,stack[stklvl-3],stack[stklvl-2],stack[stklvl-1]);
-        }
-        else if (code == 0x0003) { //return
-            if (stklvl == 0)
-                return 1;
-            cpc = stack[stklvl + 3];
-            stklvl -= 4;
-            if (stklvl < 0)
-                fail();
         }
         else if (code == 0x0001) {
             if(echng())
@@ -88,7 +85,8 @@ char* getLabel(long location){
                     return 1;
                 }
         }
-        else if (code ==2 || code ==3 ) {            //or veya return
+        else if (code ==2 || code ==3 ) {//or veya return
+            printf("OR|RET Stklvl: %d cpc:%d six:%d sox:%d spc:%d\n",stklvl,cpc,stack[stklvl-3],stack[stklvl-2],stack[stklvl-1]);
             if (stklvl == 0)
                 return 0;                             //main exit of syntaxer ??  nasıl dönmeli?
             cpc = stack[stklvl - 1];
@@ -133,7 +131,7 @@ int main(void){
         cix=bufferIndex;
         setcode(NULL);
         skblank();
-        if(!synent()){
+        if(synent()){
             printf("error");
         }
         outbuff[stmstart] = cox;

@@ -131,9 +131,15 @@ synent(){
 
 	stklvl = 0;
 	six=cix;
-	sox=cox; 
+	sox=cox;
 
-	while(){
+        stack[1]=cix;
+        stack[2]=cox;
+        stack[stklvl+3]=cpc;   //record the present address.
+        stklvl+=4;
+
+
+        while(){
 		code=nxsc();
 
 		if (code == 5)         //tnvar
@@ -258,7 +264,7 @@ srcont() {
 		return(0);
 	}
 	else {
-		svontc=0;
+		//svontc=0;                   //comment out
 		return(1);
 	}
 }	

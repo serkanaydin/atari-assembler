@@ -1,4 +1,4 @@
-exp 
+exp
 	CLPRN
 	call exp
 	CRPRN
@@ -10,18 +10,18 @@ exp
 	call nv
 	call nop
 	ret
-unary 
+unary
 	CPLUS
-	or
+	chng
 	CUPLUS
 	or
 	CMINUS
-	or
+	chng
 	CUMINUS
 	or
 	CNOT
 	ret
-nv 	
+nv
 	call nfun
 	or
 	call nvar
@@ -30,12 +30,12 @@ nv
 	or
 	call stcomp
 	ret
-nop 
+nop
 	call op
 	call exp
 	or
 	ret
-op 
+op
 	CEXP
 	or
 	CPLUS
@@ -63,27 +63,27 @@ op
 	COR
 	or
 	ret
-nvar 
+nvar
 	tnvar
 	call nmat
 	ret
-nmat 
+nmat
 	CLPRN
-	or
+	chng
 	CALPRN
 	call exp
 	call nmat2
 	CRPRN
 	or
 	ret
-nmat2 
+nmat2
 	CCOM
-	or
+	chng
 	CACOM
 	call exp
 	or
 	ret
-nfun 
+nfun
 	CNFNP
 	call nfp
 	or
@@ -92,134 +92,134 @@ nfun
 	or
 	call nfusr
 	ret
-nfusr 
+nfusr
 	CUSR
 	CLPRN
-	or
+	chng
 	CFLPRN
 	call pusr
 	CRPRN
 	ret
-nfp 
+nfp
 	CLPRN
-	or
+	chng
 	CFLPRN
 	call exp
 	CRPRN
 	ret
-sfp 
+sfp
 	CLPRN
-	or
+	chng
 	CFLPRN
 	call str
 	CRPRN
 	ret
-stcomp 
+stcomp
 	call str
 	call sop
 	call str
 	ret
-str 
+str
 	call sfun
 	or
 	call svar
 	or
 	tscon
 	ret
-sfun 
+sfun
 	call sfnp
 	call nfp
 	ret
-svar 
+svar
 	tsvar
 	call smat
 	ret
-smat 
+smat
 	CLPRN
-	or
+	chng
 	CSLPRN
 	call exp
 	call smat2
 	or
 	ret
-smat2 
+smat2
 	CCOM
-	or
+	chng
 	CACOM
 	call exp
 	or
 	ret
-sop 
+sop
 	CLE
-	or
+	chng
 	CSLE
 	or
 	CNE
-	or
+	chng
  	CSNE
 	or
 	CGE
-	or
+	chng
 	CSGE
 	or
 	CLT
-	or
+	chng
 	CSLT
 	or
 	CGT
-	or
+	chng
 	CSGT
 	or
 	CEQ
-	or
+	chng
 	CSEQ
 	ret
-sput 
+sput
 	CPND
 	call exp
 	CCOM
-strap 
-sgoto 
-sgosub 
-sgr 
-scolor 
-xeos 
+strap
+sgoto
+sgosub
+sgr
+scolor
+xeos
 	call exp
-scsave 
-scload 
-sdos 
-sclr 
-sret 
-send 
-sstop 
-spop 
-snew 
-sbyte 
-scont 
-sdeg 
-srad 
+scsave
+scload
+sdos
+sclr
+sret
+send
+sstop
+spop
+snew
+sbyte
+scont
+sdeg
+srad
 	call eos
 	ret
-slet 
-silet 
+slet
+silet
 	call nvar
 	CEQ
-	or
+	chng
 	CAASN
 	call exp
 	call eos
 	or
 	call svar
 	CEQ
-	or
+	chng
 	CAASN
 	call str
 	call eos
 	ret
-sfor 
+sfor
 	tnvar
 	CEQ
-	or
+	chng
 	CAASN
 	call exp
 	CTO
@@ -227,26 +227,26 @@ sfor
 	call fstep
 	call eos
 	ret
-fstep 
+fstep
 	CSTEP
 	call exp
 	or
 	ret
-slocate 
+slocate
 	call exp
 	CCOM
 	call exp
 	CCOM
 	call snext
 	ret
-sget 
+sget
 	call d1
 	CCOM
-snext 
+snext
 	tnvar
 	call eos
 	ret
-srest 
+srest
 	call exp
 	call eos
 	or
@@ -254,46 +254,46 @@ srest
 	ret
 sinput    //"slinput", "sinput" olarak değiştirildi.
 	call opd
-sread 
+sread
 	call nsvrl
 	call eos
 	ret
-eos 
+eos
 	CEOS
 	or
 	CCR
 	ret
-sprint 
+sprint
 	call d1
 	call eos
 	or
 	call opd
-slprint 
+slprint
 	call eos
 	ret
-d1 
+d1
 	CPND
 	call exp
 	ret
-nsvar 
+nsvar
 	tnvar
 	or
 	tsvar
 	ret
-nsvrl 
+nsvrl
 	call nsvar
 	call nsv2
 	or
 	ret
-nsv2 
+nsv2
 	CCOM
 	call nsvrl
 	or
 	ret
-sxio 
+sxio
 	call exp
 	CCOM
-sopen 
+sopen
 	call d1
 	CCOM
 	call texp
@@ -301,23 +301,23 @@ sopen
 	call fs
 	call eos
 	ret
-sclose 
+sclose
 	call d1
 	call eos
 	ret
-senter 
-sload 
-ssave 
+senter
+sload
+ssave
 	call fs
 	call eos
 	ret
-srun 
+srun
 	call fs
 	call eos
 	or
 	call eos
 	ret
-opd 
+opd
 	call d1
 	CCOM
 	or
@@ -325,7 +325,7 @@ opd
 	CSC
 	or
 	ret
-slist 
+slist
 	call fs
 	call eos
 	or
@@ -335,11 +335,11 @@ slist
 	or
 	call lis
 	ret
-lis 
+lis
 	call l1
 	call eos2
 	ret
-sstatus 
+sstatus
 	call stat
 	call eos2
 	ret
@@ -348,8 +348,8 @@ stat
 	CCOM
 	call nvar
 	ret
-snote 
-spoint 
+snote
+spoint
 	call stat
 	CCOM
 	call nvar
@@ -358,58 +358,58 @@ spoint
 fs
 	call str
 	ret
-texp 
+texp
 	call exp
 	CCOM
 	call exp
 	ret
-ssound 
+ssound
 	call exp
 	CCOM
-ssetcolor 
+ssetcolor
 	call exp
 	CCOM
-spoke 
-splot 
-spos 
-sdrawto 
+spoke
+splot
+spos
+sdrawto
 	call texp
 	call eos2
 	ret
-sdim 
-scom 
+sdim
+scom
 	call nsml
 	call eos2
 	ret
-son 
+son
 	call exp
 	call on1
 	call expl
 	call eos2
 	ret
-on1 
+on1
 	CGTO
 	or
 	CGS
 	ret
-expl 
+expl
 	call exp
 	call expl1
 	ret
-expl1 
+expl1
 	CCOM
 	call expl
 	or
 	ret
-eos2 
+eos2
 	CEOS
 	or
 	CCR
 	ret
-nsmat 
+nsmat
 	tnvar
 	CLPRN
-	or
+	chng
 	CDLPRN
 	call exp
 	call nmat2
@@ -417,84 +417,84 @@ nsmat
 	or
 	tsvar
 	CLPRN
-	or
+	chng
 	CDSLPR
 	call exp
 	CRPRN
 	ret
-nsml 
+nsml
 	call nsmat
 	call nsml2
 	or
 	ret
-nsml2 
+nsml2
 	CCOM
 	call nsml
 	or
 	ret
-sif 
+sif
 	call exp
 	CTHEN
 	call ifa
 	call eos2
 	ret
-ifa 
+ifa
 	tncon
 	or
 	eif
-pr1 
+pr1
 	call pel
 	or
 	call psl
 	call pr2
 	or
 	ret
-pr2 
+pr2
 	call pel
 	or
 	ret
-pel 
+pel
 	call pes
 	call pela
 	ret
-pes 
+pes
 	call exp
 	or
 	call str
 	ret
-pela 
+pela
 	call psl
 	call pr2
 	or
 	ret
-psl 
+psl
 	call ps
 	call psla
 	ret
-psla 
+psla
 	call psl
 	or
 	ret
-ps 
+ps
 	CCOM
 	or
 	CSC
 	ret
-l1 
+l1
 	call exp
 	call l2
 	or
 	ret
-l2 
+l2
 	CCOM
 	call exp
 	or
 	ret
-srem 
+srem
 	erem
-sdata 
+sdata
 	edata
-nfsp 
+nfsp
 	CASC
 	or
 	CVAL
@@ -503,19 +503,19 @@ nfsp
 	or
 	CLEN
 	ret
-sfnp 
+sfnp
 	CSTR
 	or
 	CCHR
 	or
 	ret
-pusr 
+pusr
 	call exp
 	call pusr1
 	ret
-pusr1 
+pusr1
 	CCOM
-	or
+	chng
 	CACOM
 	call pusr
 	or
