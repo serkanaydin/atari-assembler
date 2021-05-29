@@ -18,8 +18,9 @@ int srcont(){
         svontc = temp;
     }
     temp = program[cpc];
-    printf("--SRCONT-- temp=%d svontc=%d\n",temp,svontc);
+    fprintf(stderr,"--SRCONT-- temp=%d svontc=%d\n",temp,svontc);
     if(svontc == temp){
+        fprintf(stderr,"SRCONT - SETCODE SVONTC=%d temp=%d\n",svontc,temp);
         setcode(&temp);
         cix = svontl;
         return 0;
@@ -59,17 +60,17 @@ int fail(){
                 cpc++;
             }
             code=nxsc();
-            printf("--Fail-- code=%d\n",code);
+            fprintf(stderr,"--Fail-- code=%d\n",code);
         }
         if(code==3){
-            printf("--Fail-- code=3 stklvl=%d\n",stklvl);
+            fprintf(stderr,"--Fail-- code=3 stklvl=%d\n",stklvl);
 
             if(stklvl==0){
                 return 1;
             }
             cpc=stack[stklvl-1];                        //??
             stklvl-=4;
-            printf("--Fail-- cpc=%d stklvl=%d\n",cpc,stklvl);
+            fprintf(stderr,"--Fail-- cpc=%d stklvl=%d\n",cpc,stklvl);
         }
         else{
             if(cix>maxcix){
@@ -83,6 +84,7 @@ int fail(){
 }
 
 int tncon(){
+
     skblank();
     tvscix=cix;
     int test=0;
@@ -94,6 +96,7 @@ int tncon(){
     if(test==0)
         return 1;
     char token=0x0e;
+    printf("TNCON - SETCODE \n");
     setcode(&token);
     int outbuffIndex=0;
     while(outbuffIndex<=i){
@@ -116,6 +119,7 @@ int tscon(){
     do{
         cix++;
         ch = inbuff[cix];
+        fprintf(stderr,"TSCON - SETCODE \n");
         setcode(&ch);
     }while (!((ch=='\n')||(ch == '"')));
     outbuff[tscox]=cox-tscox;
@@ -125,25 +129,23 @@ int tvar(int tvtype){
     skblank();
     tvscix=cix;
     if(isalpha(inbuff[cix])) {
-        //srcont();
-       //if (svontc == 0 || (svontc == 1) && (inbuff[svontl] >= 0x30)) {  //not reserved word, or it is
+        srcont();
+       if (svontc == 0 || (svontc == 1) && (inbuff[svontl] >= 0x30)) {  //not reserved word, or it is
            do                                                  //a non-reserved word whose prefix
                cix++;                                //is a reserved word..
            while (isalpha(inbuff[cix]) || isdigit(inbuff[cix]));
-           return 0;    //comment silinecek
-      /* }
+       }
       if (tvtype == 0x80 ) {
            if (inbuff[cix] == '$')
                cix++;                          //skip over $
            else
                return 1;
        }
-       else if ( tvtype == 0x0 ) {
+       else if ( tvtype == 0x00 ) {
            if (inbuff[cix] == '(') {
                cix++;      //skip over (
                tvtype += 0x40;
-           } else
-               return 1;
+       }
        }
        char temp=cix;
        cix=tvscix;    //search expects the string to be searched pointed by cix.
@@ -159,11 +161,11 @@ int tvar(int tvtype){
        }
        if (result == 1){
            cix=tvscix-cix-1;
-           addToTABLE(VNTP_HEAD,VNTP_TAIL);
+           addToTABLE(&VNTP_HEAD,&VNTP_TAIL);
            char tempVname[200];
            memcpy(tempVname,(inbuff+cix-1),cix);
            VNTP_TAIL->name=tempVname;
-           addToTABLE(STMTAB_HEAD,STMTAB_TAIL);
+           addToTABLE(&STMTAB_HEAD,&STMTAB_TAIL);
            svvvte++;
            char* stmtabTemp= (char*)(calloc(8,1));
            STMTAB_TAIL->entry=stmtabTemp;
@@ -173,8 +175,9 @@ int tvar(int tvtype){
            cix=tvscix;
            if (stenum>0x7f)
                return 1;
+           fprintf(stderr,"TVAR- SETCODE \n");
            setcode(&stenum);
-       }*/
+       }
     }
    else{
         return 1;                         //error

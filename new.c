@@ -4,7 +4,7 @@
 #include "functions.h"
 #include "definitions.h"
 #include "syntaxer.h"
-
+char* labelName;
 char* getLabel(long location){
     int i;
      for(i=0;i<120;i++){
@@ -17,6 +17,7 @@ char* getLabel(long location){
 
         int synent() {
     cpc = spc = LABEL[sntab[stenum].val.num].location;
+    labelName = getLabel(cpc);
     stklvl = 0;
     six = cix;
     sox = cox;
@@ -33,9 +34,10 @@ char* getLabel(long location){
             stack[stklvl + 2] = cox;
             stack[stklvl + 3] = cpc;
             cpc = code;
-            printf("LABEL=%s\n",getLabel(code));
+            labelName = getLabel(code);
+            fprintf(stderr,"LABEL=%s\n",getLabel(code));
             stklvl += 4;
-            printf("Stklvl: %d cpc:%d six:%d sox:%d spc:%d\n",stklvl,cpc,stack[stklvl-3],stack[stklvl-2],stack[stklvl-1]);
+            fprintf(stderr,"Stklvl: %d cpc:%d six:%d sox:%d spc:%d\n",stklvl,cpc,stack[stklvl-3],stack[stklvl-2],stack[stklvl-1]);
         }
         else if (code == 0x0001) {
             if(echng())
@@ -86,7 +88,7 @@ char* getLabel(long location){
                 }
         }
         else if (code ==2 || code ==3 ) {//or veya return
-            printf("OR|RET Stklvl: %d cpc:%d six:%d sox:%d spc:%d\n",stklvl,cpc,stack[stklvl-3],stack[stklvl-2],stack[stklvl-1]);
+            fprintf(stderr,"SYNENT: CODE:%d Stklvl: %d cpc:%d six:%d sox:%d spc:%d\n",code,stklvl,cpc,stack[stklvl-3],stack[stklvl-2],stack[stklvl-1]);
             if (stklvl == 0)
                 return 0;                             //main exit of syntaxer ??  nasıl dönmeli?
             cpc = stack[stklvl - 1];
@@ -129,15 +131,15 @@ int main(void){
         lbuff = inbuff;
         search(sntab,0);
         cix=bufferIndex;
-        setcode(NULL);
+        setcode(&stenum);
         skblank();
         if(synent()){
-            printf("error");
+            fprintf(stderr,"error\n");
         }
         outbuff[stmstart] = cox;
-        while (inbuff[cix-1]!='\n')
-            outbuff[2]=cox;
+//        while (inbuff[cix-1]!='\n')
+//            outbuff[2]=cox;
         //linelength=getll();
-        printf("ready\n");
+        fprintf(stderr,"ready\n");
     }
 }

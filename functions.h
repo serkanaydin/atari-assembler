@@ -18,7 +18,7 @@ char* getFromTable(void* table){
     }
     else if(table == OPNTAB_STRING) { temp = ((struct table *) (table))[stenum].val.str; }
     else if(table == VNTP_HEAD){
-        temp= getStr(stenum,VNTP_HEAD);
+        temp= getStr(stenum,&VNTP_HEAD);
     }
     return temp;
 }
