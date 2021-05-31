@@ -65,7 +65,7 @@ int search(void* table ,int SRCNXT) {  //srcadr is the address of the table, src
     }
 }
 int opnTabSearch(char* str){
-    for(int i=0;i<54;i++){
+    for(int i=0;i<55;i++){
         if(strcmp(OPNTAB[i].name, str) == 0){
             return i;
         }
@@ -76,11 +76,11 @@ void setcode(char* a) {
     if(a==NULL)
         outbuff[cox++]= '\0';
     else { outbuff[cox++] = *a; }
-    printf("SETCODE-> COX:%d OUTBUFF: ",cox);
+    fprintf(stderr,"SETCODE-> COX:%d OUTBUFF: ",cox);
     for(int i=0;i<=cox;i++){
-        printf("%x",outbuff[i]);
+        fprintf(stderr,"%x|",outbuff[i]);
     }
-    printf("\n");
+    fprintf(stderr,"\n");
     if (cox==0) { printf("line is too long"); }
 }
 

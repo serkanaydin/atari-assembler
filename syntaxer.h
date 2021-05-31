@@ -18,9 +18,9 @@ int srcont(){
         svontc = temp;
     }
     temp = program[cpc];
-    fprintf(stderr,"--SRCONT-- temp=%d svontc=%d\n",temp,svontc);
+    fprintf(stderr,"--SRCONT-- cix=%d temp=%d svontc=%d\n",cix,temp,svontc);
     if(svontc == temp){
-        fprintf(stderr,"SRCONT - SETCODE SVONTC=%d temp=%d\n",svontc,temp);
+        fprintf(stderr,"SRCONT - SETCODE-- cix=%d SVONTC=%d temp=%d\n",cix,svontc,temp);
         setcode(&temp);
         cix = svontl;
         return 0;
@@ -49,7 +49,7 @@ int eif(){
 
 int echng(){
     outbuff[cox-1] = (char)(program[cpc++]&0x00ff); //outbuff is a char arr but program short arr
-    return(1);
+    return(0);
 }
 
 int fail(){
@@ -75,9 +75,9 @@ int fail(){
         else{
             if(cix>maxcix){
                 maxcix = cix;
-                cix = stack[stklvl-3];                  //??
-                cox = stack[stklvl-2];                  //??
             }
+            cix = stack[stklvl-3];                  //??
+            cox = stack[stklvl-2];                  //??
         }
         return 0;
     }
@@ -129,7 +129,7 @@ int tvar(int tvtype){
     skblank();
     tvscix=cix;
     if(isalpha(inbuff[cix])) {
-        srcont();
+        srcont();                               //which table?
        if (svontc == 0 || (svontc == 1) && (inbuff[svontl] >= 0x30)) {  //not reserved word, or it is
            do                                                  //a non-reserved word whose prefix
                cix++;                                //is a reserved word..
