@@ -38,7 +38,7 @@ int search(void* table ,int SRCNXT) {  //srcadr is the address of the table, src
                 if(getFromTable(table) == NULL)
                     return 1;
                 error =0;
-            case 1: if(*(lbuff + bufferIndex) == '.'){
+            case 1: if(inbuff[bufferIndex] == '.'){
                     situation=5;
                     break;
                 }
@@ -46,7 +46,7 @@ int search(void* table ,int SRCNXT) {  //srcadr is the address of the table, src
 
                 temp=getFromTable(table);
                 size=strlen(temp);
-                if(*(lbuff + bufferIndex) == temp[tableIndex]){
+                if(inbuff[bufferIndex] == temp[tableIndex]){
                     situation=3;
                     break;
                 }

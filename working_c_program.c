@@ -220,6 +220,7 @@ fail() {
 				return(1); 	
 			cpc = stack[stklvl-???];   //basically, this is a return in syntax code.
 			stklvl-=4;
+			fail();                     //---BENIM EKLEDIĞIM---A267: BCS FAIL
 		}
 		//An OR=3 is encountered.We must restore inbuff and outbuff and try again.
 		else { 

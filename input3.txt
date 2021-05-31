@@ -4,16 +4,19 @@ exp
 	CRPRN
 	call nop
 	or
+	call unary
+	call exp
+	or
 	call nv
 	call nop
 	ret
 unary
 	CPLUS
-	or
+	chng
 	CUPLUS
 	or
 	CMINUS
-	or
+	chng
 	CUMINUS
 	or
 	CNOT
@@ -66,7 +69,7 @@ nvar
 	ret
 nmat
 	CLPRN
-	or
+	chng
 	CALPRN
 	call exp
 	call nmat2
@@ -75,7 +78,7 @@ nmat
 	ret
 nmat2
 	CCOM
-	or
+	chng
 	CACOM
 	call exp
 	or
@@ -92,19 +95,21 @@ nfun
 nfusr
 	CUSR
 	CLPRN
-	or
+	chng
 	CFLPRN
 	call pusr
 	CRPRN
 	ret
 nfp
 	CLPRN
+	chng
+	CFLPRN
 	call exp
 	CRPRN
 	ret
 sfp
 	CLPRN
-	or
+	chng
 	CFLPRN
 	call str
 	CRPRN
@@ -131,7 +136,7 @@ svar
 	ret
 smat
 	CLPRN
-	or
+	chng
 	CSLPRN
 	call exp
 	call smat2
@@ -139,34 +144,34 @@ smat
 	ret
 smat2
 	CCOM
-	or
+	chng
 	CACOM
 	call exp
 	or
 	ret
 sop
 	CLE
-	or
+	chng
 	CSLE
 	or
 	CNE
-	or
+	chng
  	CSNE
 	or
 	CGE
-	or
+	chng
 	CSGE
 	or
 	CLT
-	or
+	chng
 	CSLT
 	or
 	CGT
-	or
+	chng
 	CSGT
 	or
 	CEQ
-	or
+	chng
 	CSEQ
 	ret
 sput
@@ -199,18 +204,22 @@ slet
 silet
 	call nvar
 	CEQ
+	chng
+	CAASN
 	call exp
 	call eos
 	or
 	call svar
 	CEQ
+	chng
+	CAASN
 	call str
 	call eos
 	ret
 sfor
 	tnvar
 	CEQ
-	or
+	chng
 	CAASN
 	call exp
 	CTO
@@ -400,7 +409,7 @@ eos2
 nsmat
 	tnvar
 	CLPRN
-	or
+	chng
 	CDLPRN
 	call exp
 	call nmat2
@@ -408,7 +417,7 @@ nsmat
 	or
 	tsvar
 	CLPRN
-	or
+	chng
 	CDSLPR
 	call exp
 	CRPRN
@@ -506,7 +515,7 @@ pusr
 	ret
 pusr1
 	CCOM
-	or
+	chng
 	CACOM
 	call pusr
 	or
