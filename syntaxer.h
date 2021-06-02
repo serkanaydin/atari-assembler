@@ -62,15 +62,14 @@ int fail(){
             code=nxsc();
             fprintf(stderr,"--Fail-- code=%d\n",code);
         }
-        if(code==3){
+        if(code==3){                                    //RET=3 ENCOUNTED
             fprintf(stderr,"--Fail-- code=3 stklvl=%d\n",stklvl);
 
-            if(stklvl==0){
+            if(stklvl==4){
                 return 1;
             }
             cpc=stack[stklvl-1];                        //??
             stklvl-=4;
-            fail();
             fprintf(stderr,"--Fail-- cpc=%d stklvl=%d\n",cpc,stklvl);
         }
         else{
@@ -79,8 +78,9 @@ int fail(){
             }
             cix = stack[stklvl-3];                  //??
             cox = stack[stklvl-2];                  //??
+            return 0;
         }
-        return 0;
+
     }
 }
 
