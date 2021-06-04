@@ -12,9 +12,9 @@ int srcont(){
         svontc = temp;
     }
     temp = program[cpc];
-    fprintf(stderr,"--SRCONT-- cix=%d temp=%d svontc=%d\n",cix,temp,svontc);
+    printf("--SRCONT-- cix=%d temp=%d svontc=%d\n",cix,temp,svontc);
     if(svontc == temp){
-        fprintf(stderr,"SRCONT - SETCODE-- cix=%d SVONTC=%d temp=%d\n",cix,svontc,temp);
+        printf("SRCONT - SETCODE-- cix=%d SVONTC=%d temp=%d\n",cix,svontc,temp);
         setcode(&temp);
         cix = svontl;
         return 0;
@@ -40,7 +40,7 @@ int tncon(){
     if(test==0) {
         return 1; }
 
-    fprintf(stderr,"TNCON - SETCODE cix=%d cox=%d i=%d\n",cix,cox,i);
+    printf(stderr,"TNCON - SETCODE cix=%d cox=%d i=%d\n",cix,cox,i);
     char token=0x0e;
     setcode(&token);
     int outbuffIndex=0;
@@ -65,9 +65,11 @@ int tscon(){
     do{
         cix++;
         ch = inbuff[cix];
-        fprintf(stderr,"TSCON - SETCODE \n");
+        printf("TSCON - SETCODE \n");
         setcode(&ch);
     }while (!((ch=='\n')||(ch == '"')));
+    if (ch == '"')
+        cix++;  //increment over double quote,
     outbuff[tscox]=cox-tscox;
     return 0;
 }

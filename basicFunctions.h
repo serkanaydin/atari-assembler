@@ -14,7 +14,9 @@ char* getFromTable(void* table){
     if(table == sntab){
         temp = ((struct table*)(table))[stenum].name;
     }
-    else if(table == OPNTAB_STRING) { temp = ((struct table *) (table))[stenum].val.str; }
+    else if(table == OPNTAB_STRING) {
+        temp = ((struct table *) (table))[stenum].val.str;
+   }
     else if(table == VNTP_HEAD){
         temp= getStr(stenum,&VNTP_HEAD);
     }
@@ -74,11 +76,16 @@ void setcode(char* a) {
     if(a==NULL)
         outbuff[cox++]= '\0';
     else { outbuff[cox++] = *a; }
-    fprintf(stderr,"SETCODE-> COX:%d OUTBUFF: ",cox);
-    for(int i=0;i<=cox;i++){
-        fprintf(stderr,"%x|",outbuff[i]);
+    printf("SETCODE-> COX:%d OUTBUFF: ",cox);
+    for(int i=0;i<256;i++){
+        if(i<cox)
+            printf(ANSI_COLOR_GREEN"%x|" ANSI_COLOR_RESET,outbuff[i]);
+        else
+            printf("%x|",outbuff[i]);
+        if(i%64==0)
+        printf("\n");
     }
-    fprintf(stderr,"\n");
+    printf("\n");
     if (cox==0) { printf("line is too long"); }
 }
 

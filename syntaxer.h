@@ -30,17 +30,17 @@ int fail(){
                 cpc++;
             }
             code=nxsc();
-            fprintf(stderr,"--Fail-- code=%d\n",code);
+            printf("--Fail-- code=%d\n",code);
         }
         if(code==3){
-            fprintf(stderr,"--Fail-- code=3 stklvl=%d\n",stklvl);
+            printf("--Fail-- code=3 stklvl=%d\n",stklvl);
 
             if(stklvl==4){
                 return 1;
             }
             cpc=stack[stklvl-1];
             stklvl-=4;
-            fprintf(stderr,"--Fail-- cpc=%d stklvl=%d\n",cpc,stklvl);
+            printf("--Fail-- cpc=%d stklvl=%d\n",cpc,stklvl);
         }
         else{
             if(cix>maxcix){
@@ -84,9 +84,9 @@ int synent() {
             stack[stklvl + 3] = cpc;
             cpc = code;
             labelName = getLabel(code);
-            fprintf(stderr,"LABEL=%s\n",getLabel(code));
+            printf("LABEL=%s\n",getLabel(code));
             stklvl += 4;
-            fprintf(stderr,"Stklvl: %d cpc:%d six:%d sox:%d spc:%d\n",stklvl,cpc,stack[stklvl-3],stack[stklvl-2],stack[stklvl-1]);
+            printf("Stklvl: %d cpc:%d six:%d sox:%d spc:%d\n",stklvl,cpc,stack[stklvl-3],stack[stklvl-2],stack[stklvl-1]);
         }
         else if (code == 0x0001) {
             if(echng())
@@ -137,7 +137,7 @@ int synent() {
                 }
         }
         else if (code ==2 || code ==3 ) { //or veya return
-            fprintf(stderr,"SYNENT: CODE:%d Stklvl: %d cpc:%d six:%d sox:%d spc:%d\n",code,stklvl,cpc,stack[stklvl-3],stack[stklvl-2],stack[stklvl-1]);
+            printf("SYNENT: CODE:%d Stklvl: %d cpc:%d six:%d sox:%d spc:%d\n",code,stklvl,cpc,stack[stklvl-3],stack[stklvl-2],stack[stklvl-1]);
             if (stklvl == 4)
                 return 0;
             cpc = stack[stklvl - 1];

@@ -8,6 +8,7 @@
 #include "variableFunctions.h"
 #include "initializer.h"
 
+
 int main(void){
     initializeTables();
     while(1) {
@@ -40,10 +41,19 @@ int main(void){
         if(synent()){
             fprintf(stderr,"error\n");
         }
-        outbuff[stmstart] = cox;
-//        while (inbuff[cix-1]!='\n')
-//            outbuff[2]=cox;
-        //linelength=getll();
-        fprintf(stderr,"ready\n");
+            outbuff[2]=cox;
+            outbuff[stmlbd]=cox;
+
+        printf("SETCODE-> COX:%d OUTBUFF: ",cox);
+        for(int i=0;i<256;i++){
+            if(i<cox)
+                printf(ANSI_COLOR_GREEN "%x|" ANSI_COLOR_RESET,outbuff[i]);
+            else
+            printf("%x|",outbuff[i]);
+            if(i%64==0)
+               printf("\n");
+        }
+        printf("\n");
+        printf("ready\n");
     }
 }
