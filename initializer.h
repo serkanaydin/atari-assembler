@@ -1,110 +1,3 @@
-#include "definitions.h"
-#include "table.h"
-#include <stdio.h>
-
-int labelSearch(char* str){
-    int index=0;
-    for(int i=0;i<114;i++){
-        if(strcmp(LABEL[i].name,str)==0){
-            return i;}
-    }
-    return -1;
-}
-
-char* getFromTable(void* table){
-    char* temp=NULL;
-    if(table == sntab){
-        temp = ((struct table*)(table))[stenum].name;
-    }
-    else if(table == OPNTAB_STRING) { temp = ((struct table *) (table))[stenum].val.str; }
-    else if(table == VNTP_HEAD){
-        temp= getStr(stenum,&VNTP_HEAD);
-    }
-    return temp;
-}
-
-int search(void* table ,int SRCNXT) {  //srcadr is the address of the table, srcskip is the skip factor..
-    int size;
-    int error;
-    int situation=0;
-    char* temp;
-    if(!SRCNXT)
-        stenum=-1;
-    while(1){
-        switch (situation) {
-            case 0: stenum++;
-                bufferIndex=cix;
-                tableIndex=0;
-                if(getFromTable(table) == NULL)
-                    return 1;
-                error =0;
-            case 1: if(inbuff[bufferIndex] == '.'){
-                    situation=5;
-                    break;
-                }
-            case 2:
-
-                temp=getFromTable(table);
-                size=strlen(temp);
-                if(inbuff[bufferIndex] == temp[tableIndex]){
-                    situation=3;
-                    break;
-                }
-                error=1;
-            case 3: bufferIndex++;
-                tableIndex++;
-                if(tableIndex < size){
-                    situation=1;
-                    break;
-                }
-                if(error==0) {
-                    return 0;
-                }
-                situation=0;
-        }
-    }
-}
-int opnTabSearch(char* str){
-    for(int i=0;i<55;i++){
-        if(strcmp(OPNTAB[i].name, str) == 0){
-            return i;
-        }
-    }
-    return -1;
-}
-void setcode(char* a) {
-    if(a==NULL)
-        outbuff[cox++]= '\0';
-    else { outbuff[cox++] = *a; }
-    fprintf(stderr,"SETCODE-> COX:%d OUTBUFF: ",cox);
-    for(int i=0;i<=cox;i++){
-        fprintf(stderr,"%x|",outbuff[i]);
-    }
-    fprintf(stderr,"\n");
-    if (cox==0) { printf("line is too long"); }
-}
-
-short getlnum() {
-    short lNum=0;
-    while(inbuff[cix]<=57 && inbuff[cix]>=48){
-        lNum*=10;
-        lNum+=(short)(inbuff[cix++]-'0');
-    }
-    binint=lNum;
-    char low = (char)(lNum&0xff00);
-    char high = (char)(lNum&0x00ff);
-    setcode(&low);
-    setcode(&high);
-    return lNum;
-}
-
-void skblank(){
-    while (inbuff[cix]==' ')
-        cix++;
-}
-
-
-
 void initializeSntab(){
     sntab[0].name="rem";
     sntab[0].val.num=labelSearch("srem");
@@ -134,8 +27,8 @@ void initializeSntab(){
     sntab[12].val.num=labelSearch("sgosub");
     sntab[13].name="trap";
     sntab[13].val.num=labelSearch("strap");
-      sntab[14].name="bye";                                                            //DOESNT EXIST
-      sntab[14].val.num=labelSearch("strap");      //hata verdiği için herhangi bir değer verdim
+    sntab[14].name="bye";                                                            //DOESNT EXIST
+    sntab[14].val.num=labelSearch("strap");      //hata verdiği için herhangi bir değer verdim
     sntab[15].name="cont";
     sntab[15].val.num=labelSearch("scont");
     sntab[16].name="com";
@@ -221,33 +114,33 @@ void initializeSntab(){
 
 void initializeTables(){
     FILE *fp;
+    FILE *fp2;
     char line[100];
     char *token = NULL;
-    fp = fopen("input3.txt","r");
+    fp = fopen("program.txt","r");
     int i=0;
     int PC=0;
-    FILE *fp2 ;
 
-
-    fp2=fopen("opntab.txt","r");
+    fp2=fopen("opntab-hex-values.txt","r");
     if(fp2!=NULL) {
         while (fgets(line, sizeof line, fp2) != NULL) {
             token = strtok(line, "\n\t\r ");
             while (token) {
                 char *temp = (char*)(malloc(sizeof(token)));
-                strcpy(temp,token); // temp = CDQ
+                strcpy(temp,token);
                 OPNTAB[i].name=temp;
-                token = strtok(NULL, "\n\t\r ");
-                OPNTAB[i].val.num=strtol(token, NULL, 16);
 
                 token = strtok(NULL, "\n\t\r ");
+                OPNTAB[i].val.num=strtol(token, NULL, 16);
+                token = strtok(NULL, "\n\t\r ");
+
                 i++;
             }
         }
     }
     fclose(fp2);
 
-    fp2=fopen("opntab2.txt","r");
+    fp2=fopen("opntab-string-values.txt","r");
     i=0;
     if(fp2!=NULL) {
         while (fgets(line, sizeof line, fp2) != NULL) {
@@ -256,10 +149,12 @@ void initializeTables(){
                 char *temp = (char*)(malloc(sizeof(token)));
                 strcpy(temp,token);
                 OPNTAB_STRING[i].name=temp;
+
                 token = strtok(NULL, "\n\t\r ");
                 temp =(char*)(malloc(8));
                 strcpy(temp,token);
                 OPNTAB_STRING[i].val.str=temp;
+
                 token = strtok(NULL, "\n\t\r ");
                 i++;
             }
@@ -271,7 +166,7 @@ void initializeTables(){
     int k=0;
     if (fp != NULL){
         while(fgets(line,sizeof line,fp)!= NULL) {
-            if(line[0]=='\t'){      // (exp) label so do nothing
+            if(line[0]=='\t'){
                 token = strtok(line, "\n\r\t ");
                 if(strcmp(token,"call")==0) {
                     PC += 2; }
@@ -279,20 +174,20 @@ void initializeTables(){
                     PC+=1;
                 }
             }
-            else{           // only takes labels
-                token = strtok(line, "\n\r\t "); // token = label
+            else{
+                token = strtok(line, "\n\r\t ");
                 char* temp = (char *)(malloc(sizeof(token)));
                 strcpy(temp,token);
-                LABEL[i].name=temp; // label i = temp
-                LABEL[i].location=PC-1; // location = labels location
-                i++; // label doesn't increment PC
+                LABEL[i].name=temp;
+                LABEL[i].location=PC-1;
+                i++;
             }
             token = strtok(NULL, ",\n\t\r ");
         }
         rewind(fp);
         while(fgets(line,sizeof line,fp)!= NULL) {
-            if(line[0]=='\t'){ // if label, skip line
-                token = strtok(line, "\n\r\t "); // token = CLRPN
+            if(line[0]=='\t'){
+                token = strtok(line, "\n\r\t ");
                 if(strcmp(token,"call")==0) {
                     token = strtok(NULL, "\n\r\t ");
                     int index= labelSearch(token);
@@ -348,18 +243,7 @@ void initializeTables(){
             }
         }
     }
-    /*for(int k=0;k<110;k++){
-        printf("label %s, value:%d\n",LABEL[k].name,LABEL[k].location);
-    }
-    for(int k=0;k<54;k++){
-        printf("operator %s, value:%x\n",OPNTAB[k].name,OPNTAB[k].value);
-    }*/
-    /*for(int k=0; k<1000;k++){
-        printf("program %d value:%x\n",k,program[k]);
-    }*/
+
     initializeSntab();
 }
 
-char getll() {
-    return (*(stmcur+2));
-}

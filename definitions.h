@@ -17,6 +17,8 @@ struct linkedTable{
     char* entry;
     struct linkedTable* next;
 };
+
+
 typedef struct linkedTable* LinkedTable_PTR;
 typedef struct linkedTable LinkedTAB;
 
@@ -31,7 +33,6 @@ struct label LABEL[120];
 struct table OPNTAB[55];
 
 short program[20000];
-char* lbuff;
 char inbuff[255], outbuff[255];
 int cix, cox,binint=0;
 int maxcix=255;
@@ -39,10 +40,10 @@ int stenum;
 int stmlbd;
 int direct_statement;
 int stack[200];
-int cpc, spc, six, sox, stklvl;
+int cpc,stklvl;
 int tvscix,tscox;
 
-char svontx,svontc,svvte,svontl,svvvte=0;
+char svontx,svontc,svontl,svvvte=0;
 
 char stmstart;
 
