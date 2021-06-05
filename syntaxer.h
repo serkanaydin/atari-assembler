@@ -19,6 +19,7 @@ int eif(){
 
 int echng(){                                                                //changes previous outbuff token            //the tokens are same characters but have different meanings
     outbuff[cox-1] = (char)(program[++cpc]&0x00ff);
+    printOUTBUFF("CHNG : ");
     return(0);
 }
 

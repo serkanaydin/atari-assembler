@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 void printINBUFF(char* str){
-    printf("%-25sCIX = %-2d INBUFF :  ",str,cix);
+    printf("%-40sCIX = %-2d INBUFF :  ",str,cix);
     for(int i=0;i<50;i++){
         if(i<cix)
             printf(ANSI_COLOR_GREEN "%x|" ANSI_COLOR_RESET,inbuff[i]);
@@ -13,10 +13,10 @@ void printINBUFF(char* str){
     printf("\n");
 }
 void printOUTBUFF(char* str){
-    printf("%-25sCOX = %-2d OUTBUFF : ",str,cox);
+    printf("%-40sCOX = %-2d OUTBUFF : ",str,cox);
     for(int i=0;i<50;i++){
         if(i<cox)
-            printf(ANSI_COLOR_GREEN "%x|" ANSI_COLOR_RESET,outbuff[i]);
+            printf(ANSI_COLOR_BLUE "%x|" ANSI_COLOR_RESET,outbuff[i]);
         else
             printf("%x|",outbuff[i]);
     }

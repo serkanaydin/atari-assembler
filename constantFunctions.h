@@ -66,6 +66,7 @@ int tscon(){
     setcode(&token);
     tscox=cox;
     setcode(NULL);
+    printOUTBUFF("2 SETCODES UPPER -> SCON TOKEN & TOKEN SIZE");
     char ch;
     do{
         cix++;
@@ -77,5 +78,6 @@ int tscon(){
         cix++;
         printINBUFF("TSCON: ");}
     outbuff[tscox]=cox-tscox;                       //??
+    printINBUFF("TSCON: ");
     return 0;
 }
