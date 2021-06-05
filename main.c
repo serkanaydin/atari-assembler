@@ -27,7 +27,7 @@ int main(void){
             direct_statement = 1;
         skblank();
         stmstart=cix;                                   //statement start index
-        if (inbuff[cix] == '\n') {                      //if user is at end of the line and direct statement(user enters blank line)
+        if (inbuff[cix] == '\n') {                      //if program editor is at end of the line and direct statement(user enters blank line)
             if (direct_statement == 1)                  //program editor goes to request new line
                 continue;
 
