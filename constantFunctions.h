@@ -17,12 +17,14 @@ int srcont(){
         printf(ANSI_COLOR_BRIGHT_GREEN"SRCONT - SETCODE-- cix=%d SVONTC=%d temp=%d\n"ANSI_COLOR_RESET, cix, svontc, temp);
         setcode(&temp);
         cix = svontl;
+        printINBUFF("SRCONT : ");
         return 0;
     }
     else if((temp == 0x44)&&( 0x44 <= svontc)) {
-        printf("SRCONT - SETCODE-- cix=%d SVONTC=%d temp=%d\n",cix,svontc,temp);
+        printf("SRCONT - SETCODE- CNFNP- cix=%d SVONTC=%d temp=%d\n",cix,svontc,temp);
         setcode(&svontc);
         cix = svontl;
+        printINBUFF("SRCONT - CNFNP : ");
         return 0; }
     else{
         return 1;
@@ -50,7 +52,9 @@ int tncon(){
         outbuffIndex++;
     }
     cix=cix+i;
+    printINBUFF("TNCON: ");
     cox=cox+outbuffIndex;
+    printOUTBUFF("TNCON: ");
     return 0;
 }
 
@@ -69,8 +73,9 @@ int tscon(){
         printf(ANSI_COLOR_MAGENTA"TSCON - SETCODE \n"ANSI_COLOR_RESET);
         setcode(&ch);
     }while (!((ch=='\n')||(ch == '"')));
-    if (ch == '"')
-        cix++;  //increment over double quote,
-    outbuff[tscox]=cox-tscox;
+    if (ch == '"') {
+        cix++;
+        printINBUFF("TSCON: ");}
+    outbuff[tscox]=cox-tscox;                       //??
     return 0;
 }

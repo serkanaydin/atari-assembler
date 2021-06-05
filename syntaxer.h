@@ -37,13 +37,16 @@ int fail(){                                                                 //if
             }
             cpc=stack[stklvl-1];                                            //pulls from stack previous program counter
             stklvl-=4;
+            printStack();
         }
         else{
             if(cix>maxcix){                                                 //line is too long
                 maxcix = cix;
             }
             cix = stack[stklvl-3];                                          //pulls from stack input buffer index and output buffer index
+            printINBUFF("FAIL OR: ");
             cox = stack[stklvl-2];                                          //syntaxer will try next OR or RET
+            printOUTBUFF("FAIL OR: ");
             return 0;                                                       //return 0 means no error
         }
 
@@ -70,6 +73,7 @@ int synent() {
     stack[2]=cox;
     stack[3]=cpc;   //record the present address.
     stklvl+=4;
+    printStack();
 
     while (1) {
         code = nxsc();                                                      //gets instruction
@@ -80,9 +84,10 @@ int synent() {
             stack[stklvl + 3] = cpc;
             cpc = code;                                                     //cpc points to called label now
             labelName = getLabel(code);
-            printf(ANSI_COLOR_RED"LABEL=%s\n"ANSI_COLOR_RESET,getLabel(code));
+            printf(ANSI_COLOR_RED"SYNENT-CALL LABEL=%s\n"ANSI_COLOR_RESET,getLabel(code));
             stklvl += 4;                                                    //stack level is incremented
-            printf(ANSI_COLOR_YELLOW"Stklvl: %d cpc:%d six:%d sox:%d spc:%d\n"ANSI_COLOR_RESET,stklvl,cpc,stack[stklvl-3],stack[stklvl-2],stack[stklvl-1]);
+            printStack();
+            printf(ANSI_COLOR_YELLOW"SYNENT -CALL cpc=%d\n"ANSI_COLOR_RESET,cpc);
         }
         else if (code == 0x0001) {                                          //echng instruction which changes previous token depending on token meaning
             if(echng())
@@ -133,11 +138,11 @@ int synent() {
                 }
         }
         else if (code ==2 || code ==3 ) { //or veya return
-            printf(ANSI_COLOR_YELLOW"SYNENT: CODE:%d Stklvl: %d cpc:%d six:%d sox:%d spc:%d\n"ANSI_COLOR_RESET,code,stklvl,cpc,stack[stklvl-3],stack[stklvl-2],stack[stklvl-1]);
             if (stklvl == 4)
                 return 0;
             cpc = stack[stklvl - 1];
             stklvl -= 4;
+            printStack();
             if (stklvl < 0)
                 fail();
         }

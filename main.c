@@ -19,6 +19,8 @@ int main(void){
         inbuff[strlen(inbuff)]='\r';
         cix = 0;                                        //initializes input buffer index as 0
         cox = 0;                                        //initializes output buffer index as 0
+        printINBUFF("EDITOR INITIAL: ");
+        printOUTBUFF("EDITOR INITIAL: ");
         direct_statement = 0;                           //initializes direct statement flag as 0(direct statements execute program)
         skblank();                                      //skips blanks
         getlnum();                                      //gets line number from input and locates to outbuff's first 2 byte
@@ -37,6 +39,7 @@ int main(void){
         skblank();
         search(sntab,0);                        //searches the next token in statement table. if finds keeps the statement's index as stenum
         cix=bufferIndex;                                //equalizes input buffer index to old buffer index + token size
+        printINBUFF("EDITOR AFTER SEARCH: ");
         setcode(&stenum);                               //5. index of outbuff is become statement number
         skblank();
         if(synent()){                                   //calls the synaxer..
@@ -45,13 +48,8 @@ int main(void){
             outbuff[2]=cox;                             //sets line length
             outbuff[stmlbd]=cox;                        //sets statement length
 
-        printf("SETCODE-> COX:%d OUTBUFF: ",cox);       //debug output
-        for(int i=0;i<50;i++){
-            if(i<cox)
-                printf(ANSI_COLOR_GREEN "%x|" ANSI_COLOR_RESET,outbuff[i]);
-            else
-            printf("%x|",outbuff[i]);
-        }
+        printINBUFF("EDITOR - END OF EDITOR: ");
+        printOUTBUFF("EDITOR - END OF EDITOR: ");
         printf("\n");
         printf("ready\n");                      //writes to user ready to get a new line
     }

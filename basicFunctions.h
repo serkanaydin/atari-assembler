@@ -1,6 +1,37 @@
 #include "definitions.h"
 #include "table.h"
 #include <stdio.h>
+
+void printINBUFF(char* str){
+    printf("%-25sCIX = %-2d INBUFF :  ",str,cix);
+    for(int i=0;i<50;i++){
+        if(i<cix)
+            printf(ANSI_COLOR_GREEN "%x|" ANSI_COLOR_RESET,inbuff[i]);
+        else
+            printf("%x|",inbuff[i]);
+    }
+    printf("\n");
+}
+void printOUTBUFF(char* str){
+    printf("%-25sCOX = %-2d OUTBUFF : ",str,cox);
+    for(int i=0;i<50;i++){
+        if(i<cox)
+            printf(ANSI_COLOR_GREEN "%x|" ANSI_COLOR_RESET,outbuff[i]);
+        else
+            printf("%x|",outbuff[i]);
+    }
+    printf("\n");
+}
+
+void printStack(){
+    printf(ANSI_COLOR_RED"Stack level: %d STACK :\n"ANSI_COLOR_RESET,stklvl);
+    for(int i=stklvl ;i>0;i-=4 ){
+        printf("SPC: \t%d\nSOX: \t%d\nSIX:\t%d\n--------------------------\n",stack[i-1],stack[i-2],stack[i-3]);
+    }
+    printf("\n");
+}
+
+
 int labelSearch(char* str){                                         //finds index of str parameter in LABEL array
     for(int i=0;i<114;i++){                                         //which keeps locations and names of labels
         if(strcmp(LABEL[i].name,str)==0){
@@ -76,14 +107,8 @@ void setcode(char* a) {                                             //setcode fu
     if(a==NULL)
         outbuff[cox++]= '\0';
     else { outbuff[cox++] = *a; }
-    printf("SETCODE-> COX:%d OUTBUFF: ",cox);
-    for(int i=0;i<50;i++){
-        if(i<cox)
-            printf(ANSI_COLOR_GREEN"%x|" ANSI_COLOR_RESET,outbuff[i]);
-        else
-            printf("%x|",outbuff[i]);
-    }
-    printf("\n");
+
+    printOUTBUFF("SETCODE: ");
     if (cox==0) { printf("line is too long"); }
 }
 
@@ -93,6 +118,7 @@ short getlnum() {                                                   //calculates
         lNum*=10;
         lNum+=(short)(inbuff[cix++]-'0');
     }
+    printINBUFF("GETLNUM: ");
     binint=lNum;
     char low = (char)(lNum&0xff00);
     char high = (char)(lNum&0x00ff);
@@ -104,6 +130,7 @@ short getlnum() {                                                   //calculates
 void skblank(){                                                     //skips all blanks in inbuff until a non blank character appear
     while (inbuff[cix]==' ')
         cix++;
+    printINBUFF("SKBLANK: ");
 }
 
 

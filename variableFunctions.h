@@ -5,18 +5,23 @@ int tvar(int tvtype){
         srcont();                               //which table?
         if (svontc == 0 || (svontc == 1) && (inbuff[svontl] >= 0x30)) {  //not reserved word, or it is
             do                                                  //a non-reserved word whose prefix
-                cix++;                                //is a reserved word..
-            while (isalpha(inbuff[cix]) || isdigit(inbuff[cix]));
+            {   cix++;
+                printINBUFF("TVAR: ");
+            }while (isalpha(inbuff[cix]) || isdigit(inbuff[cix]));
         }
+
         if (tvtype == 0x80 ) {
-            if (inbuff[cix] == '$')
-                cix++;                          //skip over $
+            if (inbuff[cix] == '$') {
+                cix++;
+                printINBUFF("TVAR STR: ");
+            }                       //skip over $
             else
                 return 1;
         }
         else if ( tvtype == 0x00 ) {
             if (inbuff[cix] == '(') {
                 cix++;      //skip over (
+                printINBUFF("TVAR NUMERIC ARRAY: ");
                 tvtype += 0x40;
             }
         }
@@ -49,7 +54,6 @@ int tvar(int tvtype){
             cix=tvscix;
             if (stenum>0x7f)
                 return 1;
-            printf(ANSI_COLOR_BLUE"TVAR- SETCODE \n"ANSI_COLOR_RESET);
             setcode(&stenum);
         }
     }
