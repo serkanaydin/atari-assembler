@@ -38,20 +38,9 @@ int tvar(int tvtype){
             }
         }
         if (result == 1){
-            cix=tvscix-cix-1;
-            addToTABLE(&VNTP_HEAD,&VNTP_TAIL);
-            char tempVname[200];
-            memcpy(tempVname,(inbuff+cix-1),cix);
-            VNTP_TAIL->name=tempVname;
-            addToTABLE(&STMTAB_HEAD,&STMTAB_TAIL);
-            svvvte++;
-
-            char* stmtabTemp= (char*)(calloc(8,1));
-            STMTAB_TAIL->entry=stmtabTemp;
-
+          cix=tvscix;
             if(tvtype==0x40)
                 --tvscix;
-            cix=tvscix;
             if (stenum>0x7f)
                 return 1;
             setcode(&stenum);

@@ -269,6 +269,7 @@ sprint
 	or
 	call opd
 slprint
+	call pr1
 	call eos
 	ret
 d1

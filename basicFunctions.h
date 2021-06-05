@@ -24,9 +24,9 @@ void printOUTBUFF(char* str){
 }
 
 void printStack(){
-    printf(ANSI_COLOR_RED"Stack level: %d STACK :\n"ANSI_COLOR_RESET,stklvl);
+    printf(ANSI_COLOR_RED"STACK :\n"ANSI_COLOR_RESET,stklvl);
     for(int i=stklvl ;i>0;i-=4 ){
-        printf("SPC: \t%d\nSOX: \t%d\nSIX:\t%d\n--------------------------\n",stack[i-1],stack[i-2],stack[i-3]);
+        printf("Stack level: %d  SPC: %d SOX: %d SIX: %d\n--------------------------\n",i,stack[i-1],stack[i-2],stack[i-3]);
     }
     printf("\n");
 }
