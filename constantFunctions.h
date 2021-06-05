@@ -12,14 +12,15 @@ int srcont(){
         svontc = temp;
     }
     temp = program[cpc];
-    printf("--SRCONT-- cix=%d temp=%d svontc=%d\n",cix,temp,svontc);
+    printf(ANSI_COLOR_GRAY"--SRCONT-- cix=%d temp=%d svontc=%d\n"ANSI_COLOR_RESET, cix, temp, svontc);
     if(svontc == temp){
-        printf("SRCONT - SETCODE-- cix=%d SVONTC=%d temp=%d\n",cix,svontc,temp);
+        printf(ANSI_COLOR_BRIGHT_GREEN"SRCONT - SETCODE-- cix=%d SVONTC=%d temp=%d\n"ANSI_COLOR_RESET, cix, svontc, temp);
         setcode(&temp);
         cix = svontl;
         return 0;
     }
     else if((temp == 0x44)&&( 0x44 <= svontc)) {
+        printf("SRCONT - SETCODE-- cix=%d SVONTC=%d temp=%d\n",cix,svontc,temp);
         setcode(&svontc);
         cix = svontl;
         return 0; }
@@ -40,7 +41,7 @@ int tncon(){
     if(test==0) {
         return 1; }
 
-    printf(stderr,"TNCON - SETCODE cix=%d cox=%d i=%d\n",cix,cox,i);
+    printf(stderr,ANSI_COLOR_CYAN"TNCON - SETCODE cix=%d cox=%d i=%d\n"ANSI_COLOR_RESET,cix,cox,i);
     char token=0x0e;
     setcode(&token);
     int outbuffIndex=0;
@@ -65,7 +66,7 @@ int tscon(){
     do{
         cix++;
         ch = inbuff[cix];
-        printf("TSCON - SETCODE \n");
+        printf(ANSI_COLOR_MAGENTA"TSCON - SETCODE \n"ANSI_COLOR_RESET);
         setcode(&ch);
     }while (!((ch=='\n')||(ch == '"')));
     if (ch == '"')

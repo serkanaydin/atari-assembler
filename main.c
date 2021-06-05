@@ -46,13 +46,11 @@ int main(void){
             outbuff[stmlbd]=cox;                        //sets statement length
 
         printf("SETCODE-> COX:%d OUTBUFF: ",cox);       //debug output
-        for(int i=0;i<256;i++){
+        for(int i=0;i<50;i++){
             if(i<cox)
                 printf(ANSI_COLOR_GREEN "%x|" ANSI_COLOR_RESET,outbuff[i]);
             else
             printf("%x|",outbuff[i]);
-            if(i%64==0)
-               printf("\n");
         }
         printf("\n");
         printf("ready\n");                      //writes to user ready to get a new line

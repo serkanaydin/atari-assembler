@@ -77,13 +77,11 @@ void setcode(char* a) {                                             //setcode fu
         outbuff[cox++]= '\0';
     else { outbuff[cox++] = *a; }
     printf("SETCODE-> COX:%d OUTBUFF: ",cox);
-    for(int i=0;i<256;i++){
+    for(int i=0;i<50;i++){
         if(i<cox)
             printf(ANSI_COLOR_GREEN"%x|" ANSI_COLOR_RESET,outbuff[i]);
         else
             printf("%x|",outbuff[i]);
-        if(i%64==0)
-        printf("\n");
     }
     printf("\n");
     if (cox==0) { printf("line is too long"); }

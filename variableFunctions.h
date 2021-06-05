@@ -49,7 +49,7 @@ int tvar(int tvtype){
             cix=tvscix;
             if (stenum>0x7f)
                 return 1;
-            printf("TVAR- SETCODE \n");
+            printf(ANSI_COLOR_BLUE"TVAR- SETCODE \n"ANSI_COLOR_RESET);
             setcode(&stenum);
         }
     }
