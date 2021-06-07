@@ -33,26 +33,31 @@ struct label LABEL[120];
 struct table OPNTAB[55];
 
 short program[20000];
-char inbuff[255], outbuff[255];
-int cix, cox,binint=0;
-int maxcix=255;
+
+char inbuff[255], cix, maxcix=0x7f,
+outbuff[255],cox;
+
+char vntab[1000]; int VNTAB_LEVEL;
+char stmtab[1000]; int STMTAB_LEVEL;
+
+int binint=0;
 int stenum;
-int stmlbd;
+int stmlbd,stmstart;
 int direct_statement;
+
 int stack[200];
-int cpc,stklvl;
+int cpc,code,stklvl;
 int tvscix,tscox;
 
 char svontx,svontc,svontl,svvvte=0;
 
-char stmstart;
-
 short linelength;
 char* stmcur;
-short code;
 
 int bufferIndex;
 int tableIndex;
+
+char tempArr[255];
 
 #define ANSI_COLOR_RED     "\x1b[31m"
 #define ANSI_COLOR_GREEN   "\x1b[32m"

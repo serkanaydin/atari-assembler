@@ -9,6 +9,47 @@
 #include "initializer.h"
 
 
+/*void synok(){
+    char temp = cox;
+    outbuff[cox]=stmlbd;
+    if(inbuff[cix]=='\r'){
+        outbuff[2]=cox;
+        if(getstmt()){
+
+        }
+        else{
+        getll();
+        if(llength==(cox-1))
+            synin();
+
+        else if(llength> (cox-1))
+            syncon();
+        temp = llength-cox-1;
+        temp ^= 0xff;
+        explow(stmcur, temp);
+        svesa= stmcur;
+        if(svesa!='\0')
+            synin();
+        }
+    }
+    syncon(){
+        push(temp);                 //azaltılacak alan
+        temp = stmcur+temp;
+        stmcur = temp;
+        contflow(stmcur,temp);
+    }
+    synin(){
+        int i=cox;
+        do {
+            i--;
+            stmtab[stmcur+i] = outbuff[i];          //kontrol edilecek
+
+        } while(i!=0)
+    }
+    execute();
+
+}*/
+
 int main(void){
     initializeTables();                                  //reads tables statement name table, operator token table, syntax table and
                                                         //creates program[] array what is syntax table

@@ -5,11 +5,11 @@
     CEOS   :
     CSC    ;
     CCR    \r
-    CGTO   GOTO
-    CGS   GOSUB
-    CTO   TO
-    CSTEP   STEP
-    CTHEN   THEN
+    CGTO   goto
+    CGS   gosub
+    CTO   to
+    CSTEP   step
+    CTHEN   then
     CPND   #
     CSROP  <=
     CLE    <=
@@ -23,9 +23,9 @@
     CPLUS   +
     CMINUS   -
     CDIV   /
-    CNOT   NOT
-    COR   OR
-    CAND   AND
+    CNOT   not
+    COR   or
+    CAND   and
     CLPRN   (
     CRPRN   )
     CAASN   =
@@ -53,9 +53,9 @@
     CLEN   LEN
     CADR   ADR
     CNFNP  ATN
-    CNFNP  COS
-    CNFNP  PEEK
-    CNFNP  SIN
+    CNFNP  cos
+    CNFNP  peek
+    CNFNP  sind
     CNFNP  RND
     CNFNP  FRE
     CNFNP  EXP

@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 void printINBUFF(char* str){
-    printf("%-40sCIX = %-2d INBUFF :  ",str,cix);
+    printf("%-25sCIX = %-2d INBUFF :  ",str,cix);
     for(int i=0;i<50;i++){
         if(i<cix)
             printf(ANSI_COLOR_GREEN "%x|" ANSI_COLOR_RESET,inbuff[i]);
@@ -13,7 +13,7 @@ void printINBUFF(char* str){
     printf("\n");
 }
 void printOUTBUFF(char* str){
-    printf("%-40sCOX = %-2d OUTBUFF : ",str,cox);
+    printf("%-25sCOX = %-2d OUTBUFF : ",str,cox);
     for(int i=0;i<50;i++){
         if(i<cox)
             printf(ANSI_COLOR_BLUE "%x|" ANSI_COLOR_RESET,outbuff[i]);
@@ -50,6 +50,25 @@ char* getFromTable(void* table){
    }
     else if(table == VNTP_HEAD){                                    //if variable name table
         temp= getStr(stenum,&VNTP_HEAD);
+    }
+    else if(table==vntab){
+        int stm=-1;
+        int i=0;
+        int first=0;
+        while(stm!=stenum){
+            if(vntab[i] & 0x80 ) {
+                stm++;
+                if(vntab[i+1]!='\0')
+                    first=i+1;
+            }
+            if(vntab[i] == '\0')
+                return NULL;
+            i++;
+        }
+        memcpy(tempArr,vntab+first,i-first);
+        tempArr[i-first-1]&=0x7f;
+        tempArr[i-first]='\0';
+        return tempArr;
     }
     return temp;
 }

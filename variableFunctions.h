@@ -28,23 +28,41 @@ int tvar(int tvtype){
         char temp=cix;
         cix=tvscix;    //search expects the string to be searched pointed by cix.
         tvscix=temp;  //variable string'in sonunu tvscix'e attık.. search
-        int result=search(VNTP_HEAD,0);
+        int result=search(vntab,0);
         while(!result){
             if(bufferIndex==tvscix){
                 break;
             }
             else{
-                result=search(VNTP_HEAD,1);
+                result=search(vntab,1);
             }
         }
         if (result == 1){
-          cix=tvscix;
+            int len=tvscix-cix;
+            int i=0;
+            do {
+                vntab[VNTAB_LEVEL++] = inbuff[cix+i];
+                i++;
+                len--;
+            } while (len!=0);
+            vntab[VNTAB_LEVEL-1] |= 0x80;
+
+            len =8;
+            i=0;
+            do {
+                stmtab[STMTAB_LEVEL++] = '\0';
+                i++;
+                len--;
+            } while (len!=0);
+            svvvte++;
+        }
             if(tvtype==0x40)
                 --tvscix;
+            cix=tvscix;
             if (stenum>0x7f)
                 return 1;
             setcode(&stenum);
-        }
+
     }
     else
         return 1;
