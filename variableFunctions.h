@@ -8,7 +8,8 @@ int tvar(int tvtype){
             {   cix++;
                 printINBUFF("TVAR: ");
             }while (isalpha(inbuff[cix]) || isdigit(inbuff[cix]));
-        }
+
+
 
         if (tvtype == 0x80 ) {
             if (inbuff[cix] == '$') {
@@ -62,11 +63,13 @@ int tvar(int tvtype){
             if (stenum>0x7f)
                 return 1;
             setcode(&stenum);
+            return 0;
 
+        }
+        return 1;
     }
     else
         return 1;
-    return 0;
 }
 
 int tnvar(){
