@@ -62,7 +62,8 @@ int tvar(int tvtype){
             cix=tvscix;
             if (stenum>0x7f)
                 return 1;
-            setcode(&stenum);
+		char index =(stenum+128);
+            setcode(&index);
             return 0;
 
         }

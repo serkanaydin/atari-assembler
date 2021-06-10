@@ -47,13 +47,17 @@ int tncon(){
     char token=0x0e;
     setcode(&token);
     int outbuffIndex=0;
-    while(outbuffIndex<i){
-        outbuff[cox+outbuffIndex]=inbuff[cix+outbuffIndex];
-        outbuffIndex++;
+    int inbuffIndex=0;
+    while(outbuffIndex<6){
+	if(outbuffIndex <6-i)
+	outbuff[cox+outbuffIndex++]='\0';
+	else
+        outbuff[cox+outbuffIndex++]=inbuff[cix+inbuffIndex++];
+
     }
     cix=cix+i;
     printINBUFF("TNCON: ");
-    cox=cox+outbuffIndex;
+    cox=cox+6;
     printOUTBUFF("TNCON: ");
     return 0;
 }
@@ -68,16 +72,16 @@ int tscon(){
     setcode(NULL);
     printOUTBUFF("2 SETCODES UPPER -> SCON TOKEN & TOKEN SIZE");
     char ch;
-    do{
-        cix++;
-        ch = inbuff[cix];
+	cix++;
+    while (!(((ch=inbuff[cix])=='\n')||((ch=inbuff[cix])== '"'))){
         printf(ANSI_COLOR_MAGENTA"TSCON - SETCODE \n"ANSI_COLOR_RESET);
         setcode(&ch);
-    }while (!((ch=='\n')||(ch == '"')));
+	cix++;
+    }
     if (ch == '"') {
         cix++;
         printINBUFF("TSCON: ");}
-    outbuff[tscox]=cox-tscox;                       //??
+    outbuff[tscox]=cox-tscox-1;                       //??
     printINBUFF("TSCON: ");
     return 0;
 }

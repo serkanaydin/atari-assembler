@@ -1,5 +1,5 @@
 #include <ctype.h>
-
+char* labelName;
 int nxsc() {                                                                //gets new code program array
     return program[++cpc];
 }
@@ -23,6 +23,16 @@ int echng(){                                                                //ch
     return(0);
 }
 
+char* getLabel(long location){                                              //it is a debug function which indicates which label is executed
+    int i;
+    for(i=0;i<120;i++){
+        if(LABEL[i].location==location)
+            break;
+    }
+    return LABEL[i].name;
+
+}
+
 int fail(){                                                                 //if a function which is called from synent fails(returns 1) then fail function is called
     while(1){                                                               //gets next code from program array
         code=nxsc();
@@ -38,7 +48,8 @@ int fail(){                                                                 //if
             }
             cpc=stack[stklvl-1];                                            //pulls from stack previous program counter
             stklvl-=4;
-            printStack();
+	    labelName=getLabel(stack[stklvl]);
+            printStack( ANSI_COLOR_BR_YELLOW"AFTER RET",labelName);
         }
         else{
             if(cix>maxcix){                                                 //line is too long
@@ -54,16 +65,7 @@ int fail(){                                                                 //if
     }
 }
 
-char* labelName;
-char* getLabel(long location){                                              //it is a debug function which indicates which label is executed
-    int i;
-    for(i=0;i<120;i++){
-        if(LABEL[i].location==location)
-            break;
-    }
-    return LABEL[i].name;
 
-}
 
 int synent() {
     cpc =  LABEL[sntab[stenum].val.num].location;                           //gets the statement's syntax block's address -1
@@ -74,21 +76,24 @@ int synent() {
     stack[2]=cox;
     stack[3]=cpc;   //record the present address.
     stklvl+=4;
-    printStack();
+    printStack("AFTER SYNENT INITIALIZATION LABEL: ",labelName);
 
     while (1) {
         code = nxsc();                                                      //gets instruction
         if (code == 0x0000) {                                               //call instruction
-            code = nxsc();                                                  //gets address to jump
+            code = nxsc();  
+	    stack[stklvl]=code;                                                //gets address to jump
             stack[stklvl + 1] = cix;                                        //pushes variables to stack before call
             stack[stklvl + 2] = cox;
             stack[stklvl + 3] = cpc;
-            cpc = code;                                                     //cpc points to called label now
+            cpc = code;
+                                                     //cpc points to called label now
             labelName = getLabel(code);
-            printf(ANSI_COLOR_RED"SYNENT-CALL LABEL=%s\n"ANSI_COLOR_RESET,getLabel(code));
-            stklvl += 4;                                                    //stack level is incremented
-            printStack();
             printf(ANSI_COLOR_YELLOW"SYNENT -CALL cpc=%d\n"ANSI_COLOR_RESET,cpc);
+            printf(ANSI_COLOR_BR_RED"SYNENT-CALL LABEL=%s\n"ANSI_COLOR_RESET,getLabel(code));
+            stklvl += 4;                                                    //stack level is incremented
+            printStack(ANSI_COLOR_BR_MAGENTA"AFTER CALL LABEL: ",labelName);
+            
         }
         else if (code == 0x0001) {                                          //echng instruction which changes previous token depending on token meaning
             if(echng())
@@ -139,11 +144,13 @@ int synent() {
                 }
         }
         else if (code ==2 || code ==3 ) { //or veya return
-            if (stklvl == 4)
-                return 0;
+            if (stklvl == 4) {
+                printStack(ANSI_COLOR_BRIGHT_GREEN"STACK LEVEL = 4 SYNENT RETURNS PASS SUCCESSFULLY"ANSI_COLOR_RESET,"");
+                return 0; }
             cpc = stack[stklvl - 1];
             stklvl -= 4;
-            printStack();
+            labelName=getLabel(stack[stklvl]);
+            code==2?printStack("INSIDE SYNENT AFTER OR","") : printStack(ANSI_COLOR_BR_YELLOW"INSIDE SYNENT AFTER RET",labelName);
             if (stklvl < 0)
                 fail();
         }

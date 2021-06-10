@@ -53,6 +53,7 @@
 int main(void){
     initializeTables();                                  //reads tables statement name table, operator token table, syntax table and
                                                         //creates program[] array what is syntax table
+        printf("ready\n");    
     while(1) {                                          //program editor loop: takes input from and tokenizes
         char strEnd[2]={'\r','\0'};
         OPNTAB_STRING[6].val.str=strEnd;                //added because program doesnt read \r as char from opntab-string-values.txt

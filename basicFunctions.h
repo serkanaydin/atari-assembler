@@ -1,32 +1,33 @@
 #include "definitions.h"
 #include "table.h"
 #include <stdio.h>
-
+#include <inttypes.h>
 void printINBUFF(char* str){
-    printf("%-25sCIX = %-2d INBUFF :  ",str,cix);
-    for(int i=0;i<50;i++){
+    printf("%-25sINBUFFER CURRENT INDEX = %-2d  INBUFF :  ",str,cix);
+    for(int i=0;i<30;i++){
         if(i<cix)
-            printf(ANSI_COLOR_GREEN "%x|" ANSI_COLOR_RESET,inbuff[i]);
+            printf(ANSI_COLOR_GREEN "%d|" ANSI_COLOR_RESET,(uint8_t)inbuff[i]);
         else
-            printf("%x|",inbuff[i]);
+            printf("%d|",(uint8_t)inbuff[i]);
     }
     printf("\n");
 }
 void printOUTBUFF(char* str){
-    printf("%-25sCOX = %-2d OUTBUFF : ",str,cox);
-    for(int i=0;i<50;i++){
+    printf("%-25sOUTBUFFER CURRENT INDEX = %-2d OUTBUFF : ",str,cox);
+    for(int i=0;i<30;i++){
         if(i<cox)
-            printf(ANSI_COLOR_BLUE "%x|" ANSI_COLOR_RESET,outbuff[i]);
+            printf(ANSI_COLOR_BLUE "%d|" ANSI_COLOR_RESET,(uint8_t)outbuff[i]);
         else
-            printf("%x|",outbuff[i]);
+            printf("%d|",(uint8_t)outbuff[i]);
     }
     printf("\n");
 }
 
-void printStack(){
-    printf(ANSI_COLOR_RED"STACK :\n"ANSI_COLOR_RESET,stklvl);
+void printStack(char* str,char*lbl){
+    printf(ANSI_COLOR_BR_RED"STACK %s %s:\n"ANSI_COLOR_RESET,str,lbl);
     for(int i=stklvl ;i>0;i-=4 ){
-        printf("Stack level: %d  SPC: %d SOX: %d SIX: %d\n--------------------------\n",i,stack[i-1],stack[i-2],stack[i-3]);
+        printf("Stack level: %d  PUSHED PROGRAM COUNTER: %d PUSHED OUTBUFFER INDEX: %d PUSHED INBUFFER INDEX: "
+               "%d\n--------------------------\n",i,stack[i-1],stack[i-2],stack[i-3]);
     }
     printf("\n");
 }
@@ -141,8 +142,8 @@ short getlnum() {                                                   //calculates
     binint=lNum;
     char low = (char)(lNum&0xff00);
     char high = (char)(lNum&0x00ff);
-    setcode(&low);
     setcode(&high);
+    setcode(&low);
     return lNum;
 }
 
